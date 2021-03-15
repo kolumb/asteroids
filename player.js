@@ -1,8 +1,8 @@
 class Player {
     constructor (ship) {
         this.ship = ship;
-        this.rotationSpeed = 0.01;
-        this.thrust = 0.01;
+        this.rotationSpeed = 0.1;
+        this.thrust = 0.1;
     }
     update () {
         if (Input.left) {

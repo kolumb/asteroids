@@ -20,6 +20,14 @@ class Ship {
         ctx.strokeStyle = "white";
         ctx.closePath();
         ctx.stroke();
+        if (Input.up) {
+            ctx.beginPath();
+            ctx.moveTo(-this.size / 4,-this.size / 4);
+            ctx.lineTo(-this.size    , 0            );
+            ctx.lineTo(-this.size / 4, this.size / 4);
+            ctx.strokeStyle = "orange";
+            ctx.stroke();
+        }
         ctx.restore();
     }
 }
