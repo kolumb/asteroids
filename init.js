@@ -6,4 +6,6 @@ let pause = true;
 
 updateSize();
 
+const player = new Player(new Ship(new Vector(width / 2, height / 2)));
+
 frame();
