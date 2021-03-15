@@ -1,13 +1,16 @@
 "use strict";
-const resizeHandler = () => {
+const updateSize = () => {
     width = innerWidth;
     height = innerHeight;
     canvas.height = height;
     canvas.width = width;
     lesser = width < height ? width : height;
     bigger = width > height ? width : height;
-    if (pause) render();
 };
+const resizeHandler = () => {
+    updateSize();
+    if (pause) render();
+}
 window.addEventListener("resize", resizeHandler);
 
 const pointerdownHandler = function(e) {
