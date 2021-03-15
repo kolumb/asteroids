@@ -9,6 +9,10 @@ const updateSize = () => {
 };
 const resizeHandler = () => {
     updateSize();
+    if (player.ship.pos.x < 0)      player.ship.pos.x = player.ship.size;
+    if (player.ship.pos.y < 0)      player.ship.pos.y = player.ship.size;
+    if (player.ship.pos.x > width)  player.ship.pos.x = width - player.ship.size;
+    if (player.ship.pos.y > height) player.ship.pos.y = height - player.ship.size;
     if (pause) render();
 }
 window.addEventListener("resize", resizeHandler);

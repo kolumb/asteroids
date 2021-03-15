@@ -1,11 +1,18 @@
 class Ship {
-    constructor (pos, direction = 0, size = 10) {
+    constructor (pos, direction = Math.PI / 2, size = 10) {
         this.pos = pos;
         this.direction = direction;
         this.velocity = new Vector();
         this.size = size;
     }
     update () {
+        const probePos = this.pos.add(this.velocity);
+        if (probePos.x < 0 || probePos.x > width) {
+            this.velocity.x *= -EDGE_BOUNCINESS;
+        }
+        if (probePos.y < 0 || probePos.y > height) {
+            this.velocity.y *= -EDGE_BOUNCINESS;
+        }
         this.pos.addMut(this.velocity);
     }
     draw () {
@@ -17,8 +24,8 @@ class Ship {
         ctx.lineTo(-this.size / 2, this.size / 2);
         ctx.lineTo(-this.size / 4, 0            );
         ctx.lineTo(-this.size / 2,-this.size / 2);
-        ctx.strokeStyle = "white";
         ctx.closePath();
+        ctx.strokeStyle = "white";
         ctx.stroke();
         if (Input.up) {
             ctx.beginPath();
