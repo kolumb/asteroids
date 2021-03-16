@@ -12,7 +12,7 @@ class Player {
             this.ship.direction -= this.rotationSpeed;
         }
         if (Input.up) {
-            this.ship.velocity
+            this.ship.vel
                 .addMut(Vector.fromAngle(this.ship.direction)
                     .scale(this.thrust));
         }

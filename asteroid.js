@@ -1,14 +1,14 @@
 class Asteroid {
-    constructor (pos, size = 10, velocity = new Vector(), angleSpeed = 0) {
+    constructor (pos, size = 10, vel = new Vector(), angleSpeed = 0) {
         this.pos = pos;
         this.angle = 0;
         this.angleSpeed = angleSpeed;
         this.size = size;
-        this.velocity = velocity;
+        this.vel = vel;
         this.points = [new Vector(20, 20), new Vector(-20, 20), new Vector(-20, -20), new Vector(20, -20)];
     }
     update () {
-        this.pos.addMut(this.velocity);
+        this.pos.addMut(this.vel);
     }
     draw () {
         ctx.save();
