@@ -4,8 +4,7 @@ class Asteroid {
         this.angle = 0;
         this.angleSpeed = angleSpeed;
         this.size = size;
-        const radiusNoise = 18;
-        this.maxSize = size + radiusNoise;
+        this.maxSize = size + ASTEROID_MAX_HEIGHT;
         this.vel = vel;
         this.points = [];
         const numberOfPoints = size * 0.75;
@@ -14,7 +13,7 @@ class Asteroid {
             const angleStep = (Math.random() * 1.6 + 0.2) * (Math.PI * 2 - lastAngle) / (numberOfPoints - i);
             const angle = clamp(lastAngle + angleStep, Math.PI * 2);
             lastAngle = angle;
-            const radius = size + Math.random() * radiusNoise;
+            const radius = size + Math.random() * ASTEROID_MAX_HEIGHT;
             const x = radius * Math.cos(angle);
             const y = radius * Math.sin(angle);
             this.points.push(new Vector(x, y));
@@ -32,6 +31,8 @@ class Asteroid {
         ctx.moveTo(this.points[0].x, this.points[0].y);
         this.points.forEach(p => ctx.lineTo(p.x, p.y));
         ctx.closePath();
+        // ctx.moveTo(this.size + ASTEROID_MAX_HEIGHT / 2, 0);
+        // ctx.arc(0, 0, this.size + ASTEROID_MAX_HEIGHT / 2, 0, Math.PI * 2);
         ctx.strokeStyle = "white";
         ctx.stroke();
         ctx.restore();
