@@ -19,6 +19,14 @@ class Vector {
     sub(v) {
         return this.add(v.scale(-1));
     }
+    subMut(v) {
+        this.x -= v.x;
+        this.y -= v.y;
+        return this;
+    }
+    dot(v) {
+        return this.x * v.x + this.y * v.y;
+    }
     mult(v) {
         return new Vector(this.x * v.x, this.y * v.y);
     }
@@ -26,6 +34,11 @@ class Vector {
         const dx = this.x - v.x;
         const dy = this.y - v.y;
         return Math.sqrt(dx ** 2 + dy ** 2);
+    }
+    distEuclidean(v) {
+        const dx = this.x - v.x;
+        const dy = this.y - v.y;
+        return dx ** 2 + dy ** 2;
     }
     angleTo(v) {
         const dx = v.x - this.x;
