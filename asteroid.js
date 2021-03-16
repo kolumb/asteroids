@@ -21,6 +21,10 @@ class Asteroid {
     }
     update () {
         this.pos.addMut(this.vel);
+        if (this.pos.x + this.maxSize < 0)      this.pos.x = width + this.maxSize;
+        if (this.pos.y + this.maxSize < 0)      this.pos.y = height + this.maxSize;
+        if (this.pos.x - this.maxSize > width)  this.pos.x = -this.maxSize;
+        if (this.pos.y - this.maxSize > height) this.pos.y = -this.maxSize;
         this.angle += this.angleSpeed;
     }
     draw () {
