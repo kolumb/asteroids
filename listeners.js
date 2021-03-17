@@ -37,14 +37,16 @@ window.addEventListener("pointerup", pointerupHandler);
 const keydownHandler = function(e) {
     switch (e.code) {
         case "Space":
-            if (e.target.tagName === "BUTTON") return;
+        case "KeyF":
+            player.ship.laser = true;
+            break;
         case "KeyP":
             pause = !pause;
             if (pause === false) {
                 frame();
             }
             break;
-        case "KeyD":
+        case "KeyI":
             if (e.shiftKey) {
                 debugCollisions = !debugCollisions;
                 if (debugCollisions) debug = true;
@@ -74,6 +76,10 @@ window.addEventListener("keydown", keydownHandler);
 
 const keyupHandler = function(e) {
     switch (e.code) {
+        case "Space":
+        case "KeyF":
+            player.ship.laser = false;
+            break;
         case "ArrowUp":
         case "KeyW":
             Input.up = false;

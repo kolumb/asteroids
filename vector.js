@@ -86,11 +86,9 @@ class Vector {
         return new Vector(Math.cos(a), -Math.sin(a));
     }
     drawFrom(v) {
-        ctx.save();
         ctx.beginPath();
         ctx.moveTo(v.x, v.y);
         ctx.lineTo(v.x + this.x, v.y + this.y);
         ctx.stroke();
-        ctx.restore();
     }
 }

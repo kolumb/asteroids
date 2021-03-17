@@ -7,7 +7,9 @@ let debug = false;
 let debugCollisions = false;
 const EDGE_BOUNCINESS = 0.7;
 const ASTEROID_MAX_HEIGHT = 18;
-const ASTEROID_RIGIDITY = 0.95;
+const ASTEROID_RIGIDITY = 0.9;
+let frameCount = 0;
+const MINING_DURATION = 20;
 
 updateSize();
 

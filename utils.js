@@ -20,6 +20,10 @@ function clamp(n, limit) {
     return n;
 }
 
+const distPointToLine = (p, l1, l2) =>
+    Math.abs((l2.x - l1.x) * (l1.y - p.y) - (l1.x - p.x) * (l2.y - l1.y))
+    / Math.sqrt((l2.x - l1.x)**2 + (l2.y - l1.y)**2);
+
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();

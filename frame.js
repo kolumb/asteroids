@@ -65,6 +65,7 @@ function render() {
 }
 
 function frame() {
+    frameCount++;
     tick();
     render();
     if (pause === false) {
