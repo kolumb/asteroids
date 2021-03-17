@@ -5,6 +5,7 @@ let width, height, lesser, bigger;
 let pause = false;
 const EDGE_BOUNCINESS = 0.7;
 const ASTEROID_MAX_HEIGHT = 18;
+const ASTEROID_RIGIDITY = 0.95;
 
 updateSize();
 
