@@ -32,13 +32,42 @@ class Asteroid {
         ctx.translate(this.pos.x, this.pos.y);
         ctx.rotate(-this.angle);
         ctx.beginPath();
-        ctx.moveTo(this.points[0].x, this.points[0].y);
-        this.points.forEach(p => ctx.lineTo(p.x, p.y));
-        ctx.closePath();
-        // ctx.moveTo(this.size + ASTEROID_MAX_HEIGHT / 2, 0);
-        // ctx.arc(0, 0, this.size + ASTEROID_MAX_HEIGHT / 2, 0, Math.PI * 2);
+        if (!debug || !debugCollisions) {
+            ctx.moveTo(this.points[0].x, this.points[0].y);
+            this.points.forEach(p => ctx.lineTo(p.x, p.y));
+            ctx.closePath();
+        }
+        if (debug) {
+            ctx.moveTo(this.size + ASTEROID_MAX_HEIGHT / 2, 0);
+            ctx.arc(0, 0, this.size + ASTEROID_MAX_HEIGHT / 2, 0, Math.PI * 2);
+            ctx.lineTo(this.size, 0);
+        }
         ctx.strokeStyle = "white";
         ctx.stroke();
+        if (debug) {
+            const angleSpeedMult = 100
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size, Math.min(0, -this.angleSpeed * angleSpeedMult), Math.max(-this.angleSpeed * angleSpeedMult, 0));
+            ctx.strokeStyle = "#f88";
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(0, 0, this.size - ASTEROID_MAX_HEIGHT / 4, Math.min(0, -this.oldAngleSeed * angleSpeedMult), Math.max(-this.oldAngleSeed * angleSpeedMult, 0));
+            ctx.strokeStyle = "#ff8";
+            ctx.stroke();
+        }
         ctx.restore();
+        if (debug) {
+            const speedMult = 50
+            if (this.perp) {
+                ctx.strokeStyle = this.bad ? "red" : "white";
+                this.perp.normalized().scale(20).drawFrom(this.pos)
+            }
+            if (this.oldVel) {
+                ctx.strokeStyle = "grey";
+                this.oldVel.scale(speedMult).drawFrom(this.pos)
+            }
+            ctx.strokeStyle = "blue";
+            this.vel.scale(speedMult).drawFrom(this.pos)
+        }
     }
 }

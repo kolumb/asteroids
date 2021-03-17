@@ -3,6 +3,8 @@ const canvas = document.querySelector("#Canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 let width, height, lesser, bigger;
 let pause = false;
+let debug = false;
+let debugCollisions = false;
 const EDGE_BOUNCINESS = 0.7;
 const ASTEROID_MAX_HEIGHT = 18;
 const ASTEROID_RIGIDITY = 0.95;
@@ -14,8 +16,8 @@ const asteroids = [];
 for (let i = 0; i < 50; i++) {
     const x = Math.random() * width;
     const y = Math.random() * height;
-    const vel = 0.9;
-    const angleSpeed = 0.2;
+    const vel = 1.9;
+    const angleSpeed = 0.0;
     asteroids.push(
         new Asteroid(
             new Vector(x, y),

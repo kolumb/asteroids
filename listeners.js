@@ -44,6 +44,14 @@ const keydownHandler = function(e) {
                 frame();
             }
             break;
+        case "KeyD":
+            if (e.shiftKey) {
+                debugCollisions = !debugCollisions;
+                if (debugCollisions) debug = true;
+            } else {
+                debug = !debug;
+            }
+            break;
         case "ArrowUp":
         case "KeyW":
             Input.up = true;
