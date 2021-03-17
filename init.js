@@ -14,13 +14,14 @@ const asteroids = [];
 for (let i = 0; i < 50; i++) {
     const x = Math.random() * width;
     const y = Math.random() * height;
-    const speed = 0.9
+    const vel = 0.9;
+    const angleSpeed = 0.2;
     asteroids.push(
         new Asteroid(
-            new Vector(x, y), // pos
+            new Vector(x, y),
             8 + Math.random() * 30, // size
-            new Vector(Math.random() * speed * 2 - speed, Math.random() * speed * 2 - speed), // vel
-            Math.random() * 0.04 - 0.02
+            new Vector(Math.random() * vel * 2 - vel, Math.random() * vel * 2 - vel),
+            Math.random() * 2 * angleSpeed - angleSpeed
         )
     );
 }

@@ -12,6 +12,9 @@ function tick() {
                 const dist = Math.sqrt(distEuclidean);
                 const a1Fraction = a1.size ** 2 / touchEuclidean;
                 const a2Fraction = a2.size ** 2 / touchEuclidean;
+                const deltaAngleSpeed = a1.angleSpeed + a2.angleSpeed;
+                a1.angleSpeed -= deltaAngleSpeed * a2Fraction;
+                a2.angleSpeed -= deltaAngleSpeed * a1Fraction;
                 const dist1to2 = a2.pos.sub(a1.pos);
                 const dist2to1 = a1.pos.sub(a2.pos);
                 const vel1to2 = Math.max(dist1to2.dot(a1.vel) / dist, 0);
