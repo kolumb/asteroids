@@ -6,6 +6,12 @@ class Vector {
     length() {
         return Math.sqrt(this.x ** 2 + this.y ** 2);
     }
+    normalized() {
+        return this.scale(1 / this.length());
+    }
+    normalizeMut() {
+        this.scaleMut(1 / this.length());
+    }
     add(v) {
         let x = this.x + v.x;
         let y = this.y + v.y;
