@@ -17,13 +17,13 @@ class Ship {
             this.vel.y *= -EDGE_BOUNCINESS;
         }
         this.pos.addMut(this.vel);
+        const direction = Vector.fromAngle(this.direction);
+        const gun = this.pos.add(direction.scale(this.size));
         if (this.laser && !this.mining) {
-            const direction = Vector.fromAngle(this.direction);
-            const l1 = this.pos.add(direction.scale(this.size));
-            const l2 = this.pos.add(direction.scale(bigger));
+            const laserCap = this.pos.add(direction.scale(bigger));
             const candidates = [];
             asteroids.forEach(a => {
-                const distToLazer = distPointToLine(a.pos, l1, l2);
+                const distToLazer = distPointToLine(a.pos, gun, laserCap);
                 if (distToLazer < a.size + ASTEROID_MAX_HEIGHT / 2) {
                     if (direction.dot(this.pos.sub(a.pos)) < 0) {
                         candidates.push(a);
@@ -33,7 +33,7 @@ class Ship {
             let closestOne;
             let minDist = Infinity;
             candidates.forEach(a => {
-                const dist = a.pos.distEuclidean(l1);
+                const dist = a.pos.distEuclidean(gun);
                 if (dist < minDist) {
                     minDist = dist;
                     closestOne = a;
@@ -52,6 +52,10 @@ class Ship {
                 this.laser = false;
                 asteroids.splice(asteroids.indexOf(this.targetedAsteroid), 1);
             }
+        }
+        if (this.shot) {
+            this.shot = false;
+            bullets.push(new Bullet(gun, 10, this.direction));
         }
     }
     draw () {

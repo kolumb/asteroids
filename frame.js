@@ -2,6 +2,7 @@
 function tick() {
     player.update();
     asteroids.forEach(a => a.update());
+    bullets.forEach(a => a.update());
     for (let i = 0; i < asteroids.length - 1; i++) {
         for (let j = i + 1; j < asteroids.length; j++) {
             const a1 = asteroids[i];
@@ -62,6 +63,7 @@ function render() {
     ctx.fillRect(0, 0, width, height);
     player.draw();
     asteroids.forEach(a => a.draw());
+    bullets.forEach(a => a.draw());
 }
 
 function frame() {

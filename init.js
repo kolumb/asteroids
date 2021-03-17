@@ -13,6 +13,7 @@ const MINING_DURATION = 20;
 
 updateSize();
 
+const bullets = [];
 const player = new Player(new Ship(new Vector(width / 2, height / 2)));
 const asteroids = [];
 for (let i = 0; i < 50; i++) {

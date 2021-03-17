@@ -37,6 +37,8 @@ window.addEventListener("pointerup", pointerupHandler);
 const keydownHandler = function(e) {
     switch (e.code) {
         case "Space":
+            player.ship.shot = true;
+            break;
         case "KeyF":
             player.ship.laser = true;
             break;
