@@ -73,6 +73,17 @@ function render() {
     player.draw();
     asteroids.forEach(a => a.draw());
     bullets.forEach(a => a.draw());
+    ctx.fillStyle = "#e11";
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#ccc";
+    for (var i = 0; i <= player.ship.laserEnergy - 1; i++) {
+        ctx.fillRect(10 + i*50, 10, 40, 8);
+        ctx.strokeRect(10 + i*50, 10, 40, 8);
+    }
+    ctx.lineWidth = 1;
+    ctx.fillStyle = "#e11";
+    ctx.fillRect(10 + i*50, 10, player.ship.laserEnergy%1*40, 8);
+
 }
 
 function frame() {

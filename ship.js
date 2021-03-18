@@ -4,12 +4,14 @@ class Ship {
         this.direction = direction;
         this.vel = new Vector();
         this.size = size;
-        this.laserSearching = false
+        this.laserEnergy = 9.8;
+        this.laserSearching = false;
         this.laserShooting = false;
         this.targetedAsteroid = null;
         this.lastShotFrame = 0;
     }
     update () {
+        this.laserEnergy = Math.min(this.laserEnergy + 0.002, 10);
         const probePos = this.pos.add(this.vel);
         if (probePos.x < 0 || probePos.x > width) {
             this.vel.x *= -EDGE_BOUNCINESS;
@@ -20,7 +22,7 @@ class Ship {
         this.pos.addMut(this.vel);
         const direction = Vector.fromAngle(this.direction);
         const gun = this.pos.add(direction.scale(this.size));
-        if (this.laserSearching && !this.laserShooting) {
+        if (this.laserSearching && !this.laserShooting && this.laserEnergy > 1) {
             const laserCap = this.pos.add(direction.scale(bigger));
             const candidates = [];
             asteroids.forEach(a => {
@@ -47,6 +49,7 @@ class Ship {
             }
         }
         if (this.laserShooting) {
+            this.laserEnergy -= 1 / (this.targetedAsteroid.size * 2);
             if (frameCount - this.miningStart > this.targetedAsteroid.size * 2) {
                 this.laserShooting = false;
                 asteroids.splice(asteroids.indexOf(this.targetedAsteroid), 1);
@@ -80,7 +83,7 @@ class Ship {
             ctx.strokeStyle = "orange";
             ctx.stroke();
         }
-        if (this.laserSearching && !this.laserShooting) {
+        if (this.laserSearching && !this.laserShooting && (this.laserEnergy > 1 || Math.random() < 0.3)) {
             ctx.beginPath();
             ctx.moveTo(this.size, 0);
             ctx.lineTo(bigger, 0);
