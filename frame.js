@@ -4,10 +4,12 @@ function tick() {
     ufos.forEach(u => u.update());
     asteroids.forEach(a => a.update());
     bullets.forEach(b => b.update());
+    particles.forEach(p => p.update());
     asteroids.forEach(a => {
         bullets.forEach(b => {
             if (a.pos.distEuclidean(b.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
-                a.split(b.pos.angleTo(a.pos), b.speed);
+                const angle = b.pos.angleTo(a.pos);
+                a.split(angle);
                 b.destroy();
                 player.score += Math.floor(a.size / MIN_ASTEROID_SIZE);
             }
@@ -121,6 +123,7 @@ function render() {
     asteroids.forEach(a => a.draw());
     bullets.forEach(a => a.draw());
     ufos.forEach(u => u.draw());
+    particles.forEach(p => p.draw());
     ctx.fillStyle = "#e11";
     ctx.lineWidth = 3;
     ctx.strokeStyle = "#ccc";

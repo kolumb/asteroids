@@ -27,7 +27,7 @@ class Asteroid {
         if (this.pos.y - this.maxSize > height) this.pos.y = -this.maxSize;
         this.angle += this.angleSpeed;
     }
-    split (direction) {
+    split (direction, pos) {
         this.destroy();
         if (this.size >= MIN_ASTEROID_SIZE * 2) {
             const dir1 = Vector.fromAngle(direction + Math.PI / 3);
@@ -38,6 +38,14 @@ class Asteroid {
             const a2 = new Asteroid(pos2, 2 * this.size / 3, this.vel.add(dir2.scale(BULLET_SPEED / 5)), this.angleSpeed - VEL_TO_ROT * BULLET_SPEED / 20)
             asteroids.push(a1)
             asteroids.push(a2)
+        }
+        const pool = particles.filter(p => p.lifetime <= 0);
+        if (pool.length) {
+            for (let i = 0; i < this.size; i++) {
+                pool[i].lifetime = 100;
+                pool[i].pos = this.pos.copy();
+                pool[i].vel = Vector.fromAngle(direction + Math.random() * 0.8 - 0.4).scale(-Math.random()*3 + 1).add(this.vel);
+            }
         }
     }
     destroy () {
