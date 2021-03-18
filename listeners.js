@@ -37,18 +37,23 @@ window.addEventListener("pointerup", pointerupHandler);
 const keydownHandler = function(e) {
     switch (e.code) {
         case "Space":
-            player.ship.shot = true;
+            player.ship.shot = true && !gameOver;
             break;
         case "KeyE":
-            player.ship.shot = !player.ship.shot;
+            player.ship.shot = !player.ship.shot && !gameOver;
             break;
         case "KeyF":
-            if (!player.ship.laserShooting) player.ship.laserSearching = true;
+            if (!player.ship.laserShooting && !gameOver) player.ship.laserSearching = true;
             break;
         case "KeyP":
             pause = !pause;
             if (pause === false) {
                 frame();
+            }
+            break;
+        case "KeyR":
+            if (gameOver) {
+                RestartElem.click();
             }
             break;
         case "KeyI":

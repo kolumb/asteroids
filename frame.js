@@ -17,6 +17,7 @@ function tick() {
             player.ship.pos.addMut(collisionVector.scale(0.05));
             a.split(player.ship.pos.angleTo(a.pos));
             if (!gameOver) {
+                player.ship.shot = false;
                 setTimeout(() => {
                     MenuElem.classList.remove("hidden");
                     ScoreElem.textContent = player.score;
@@ -79,6 +80,10 @@ function tick() {
                 if (debug && debugCollisions) pause = true;
             }
         }
+    }
+    if (frameCount > nextAsteroidSpawn) {
+        if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
+        nextAsteroidSpawn = frameCount + asteroids.length * 6;
     }
 }
 function render() {

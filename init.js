@@ -13,6 +13,7 @@ const MIN_ASTEROID_SIZE = 8;
 const MAX_ASTEROID_SIZE = 50; // minimum 20
 const VEL_TO_ROT = 0.2;
 let frameCount = 0;
+let nextAsteroidSpawn = 0;
 const MINING_DURATION = 20;
 const BULLET_SPEED = 10;
 const SHOOT_COOLDOWN = 5;
@@ -41,10 +42,5 @@ function spawnAsteroid() {
         )
     );
 }
-function asteroidSpawner() {
-    if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
-    setTimeout(asteroidSpawner, asteroids.length * 100);
-}
-asteroidSpawner();
 
 frame();

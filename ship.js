@@ -52,6 +52,7 @@ class Ship {
             this.laserEnergy -= 1 / (this.targetedAsteroid.size * 2);
             if (frameCount - this.miningStart > this.targetedAsteroid.size * 2) {
                 this.laserShooting = false;
+                player.score += 2 ** Math.floor(this.targetedAsteroid.size / MIN_ASTEROID_SIZE) / 2;
                 asteroids.splice(asteroids.indexOf(this.targetedAsteroid), 1);
             }
         }
