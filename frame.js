@@ -10,6 +10,18 @@ function tick() {
                 b.destroy();
             }
         })
+        if (player.ship.pos.distEuclidean(a.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
+            const collisionVector = player.ship.pos.sub(a.pos);
+            player.ship.vel.addMut(collisionVector.scale(0.05));
+            player.ship.pos.addMut(collisionVector.scale(0.05));
+            a.split(player.ship.pos.angleTo(a.pos));
+            if (!gameOver) {
+                setTimeout(() => {
+                    MenuElem.classList.remove("hidden");
+                }, 1000);
+                gameOver = true;
+            }
+        }
     });
     for (let i = 0; i < asteroids.length - 1; i++) {
         for (let j = i + 1; j < asteroids.length; j++) {

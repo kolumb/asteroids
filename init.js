@@ -3,6 +3,7 @@ const canvas = document.querySelector("#Canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 let width, height, lesser, bigger;
 let pause = false;
+let gameOver = false;
 let debug = false;
 let debugCollisions = false;
 const EDGE_BOUNCINESS = 0.7;

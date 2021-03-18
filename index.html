@@ -17,12 +17,38 @@
                 display: block;
                 background: lightgrey;
             }
-            @media screen and (max-width: 950px) {
+            #MenuElem {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                left: calc(50% - 5em);
+                top: calc(50% - 5em);
+                width: 10em;
+                height: 10em;
+                color: white;
+                background-color: #2b2929;
+            }
+            #ScoreElem {
+                margin: 1em;
+            }
+            #RestartElem {
+                cursor: pointer;
+                line-height: 2em;
+            }
+            #MenuElem.hidden {
+                display: none;
             }
         </style>
     </head>
     <body>
         <canvas id="Canvas"></canvas>
+        <div id="MenuElem" class="hidden">
+            <span>Your score is:</span>
+            <span id="ScoreElem">0</span>
+            <button id="RestartElem">Restart</button>
+        </div>
         <script src="vector.js"></script>
         <script src="utils.js"></script>
         <script src="bullet.js"></script>

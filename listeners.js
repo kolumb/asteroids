@@ -106,3 +106,7 @@ const keyupHandler = function(e) {
     }
 };
 window.addEventListener("keyup", keyupHandler);
+
+RestartElem.addEventListener("click", e => {
+    location.reload();
+})

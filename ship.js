@@ -1,9 +1,9 @@
 class Ship {
     constructor (pos, size = 10, direction = Math.PI / 2) {
         this.pos = pos;
+        this.size = size;
         this.direction = direction;
         this.vel = new Vector();
-        this.size = size;
         this.laserEnergy = 9.8;
         this.laserSearching = false;
         this.laserShooting = false;
