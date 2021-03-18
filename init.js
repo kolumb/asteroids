@@ -19,10 +19,15 @@ updateSize();
 const bullets = [];
 const player = new Player(new Ship(new Vector(width / 2, height / 2)));
 const asteroids = [];
-for (let i = 0; i < 50; i++) {
-    const x = Math.random() * width;
-    const y = Math.random() * height;
-    const vel = 1.9;
+function spawnAsteroid() {
+    if (Math.random() < 0.5) {
+        var x = Math.random() * width;
+        var y = Math.random() < 0.5 ? -100 : height + 100;
+    } else {
+        var x = Math.random() < 0.5 ? -100 : width + 100;
+        var y = Math.random() * height;
+    }
+    const vel = 0.9;
     const angleSpeed = 0.0;
     asteroids.push(
         new Asteroid(
@@ -33,5 +38,10 @@ for (let i = 0; i < 50; i++) {
         )
     );
 }
+function asteroidSpawner() {
+    if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
+    setTimeout(asteroidSpawner, asteroids.length * 100);
+}
+asteroidSpawner();
 
 frame();
