@@ -35,6 +35,10 @@ const pointerupHandler = function(e) {
 window.addEventListener("pointerup", pointerupHandler);
 
 const keydownHandler = function(e) {
+    if (!tutorial) {
+        tutorial = true;
+        HelpElem.classList.add("hidden");
+    }
     switch (e.code) {
         case "Space":
             player.ship.shot = true && !gameOver;
@@ -79,6 +83,9 @@ const keydownHandler = function(e) {
         case "ArrowRight":
         case "KeyD":
             Input.right = true;
+            break;
+        case "Slash":
+            HelpElem.classList.toggle('hidden');
             break;
     }
 };

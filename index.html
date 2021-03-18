@@ -37,8 +37,14 @@
                 cursor: pointer;
                 line-height: 2em;
             }
-            #MenuElem.hidden {
+            #MenuElem.hidden, .hidden {
                 display: none;
+            }
+            #HelpElem {
+                color: white;
+                position: absolute;
+                bottom: 0;
+                right: 0;
             }
         </style>
     </head>
@@ -48,6 +54,20 @@
             <span>Your score is:</span>
             <span id="ScoreElem">0</span>
             <button id="RestartElem">Restart</button>
+        </div>
+        <div id="HelpElem" class="">
+            <h1>Controls:</h1>
+            <ul>
+                <li>W / up - thrust</li>
+                <li>A D / right left - rotate</li>
+                <li>Space - shoot</li>
+                <li>E - autoshoot</li>
+                <li>F - laser</li>
+                <li>P - pause</li>
+                <li>I - debug info</li>
+                <li>R - restart on GameOver</li>
+                <li>? - this help</li>
+            </ul>
         </div>
         <script src="vector.js"></script>
         <script src="utils.js"></script>

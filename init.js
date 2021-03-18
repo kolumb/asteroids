@@ -2,6 +2,7 @@
 const canvas = document.querySelector("#Canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 let width, height, lesser, bigger;
+let tutorial = false;
 let pause = false;
 let gameOver = false;
 let debug = false;
