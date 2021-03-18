@@ -2,9 +2,14 @@ class UFO {
     constructor (pos, size = 10) {
         this.pos = pos;
         this.size = size;
+        this.target = player.ship.pos;
     }
     update () {
-        
+        if (Math.random() < 0.05) {
+            this.target = player.ship.pos.add(Vector.fromAngle(Math.random() * Math.PI * 2).scale(Math.random() * 300));
+        }
+        const vel = this.target.sub(this.pos);
+        this.pos.addMut(vel.clamp(2));
     }
     draw () {
         ctx.save();
