@@ -39,6 +39,9 @@ const keydownHandler = function(e) {
         case "Space":
             player.ship.shot = true;
             break;
+        case "KeyE":
+            player.ship.shot = !player.ship.shot;
+            break;
         case "KeyF":
             if (!player.ship.laserShooting) player.ship.laserSearching = true;
             break;
@@ -78,6 +81,9 @@ window.addEventListener("keydown", keydownHandler);
 
 const keyupHandler = function(e) {
     switch (e.code) {
+        case "Space":
+            player.ship.shot = false;
+            break;
         case "KeyF":
             player.ship.laserSearching = false;
             break;

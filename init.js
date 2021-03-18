@@ -13,11 +13,12 @@ const VEL_TO_ROT = 0.2;
 let frameCount = 0;
 const MINING_DURATION = 20;
 const BULLET_SPEED = 10;
+const SHOOT_COOLDOWN = 5;
 
 updateSize();
 
 const bullets = [];
-const player = new Player(new Ship(new Vector(width / 2, height / 2)));
+const player = new Player(new Ship(new Vector(width / 2, height / 2), 13));
 const asteroids = [];
 function spawnAsteroid() {
     if (Math.random() < 0.5) {

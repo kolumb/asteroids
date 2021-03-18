@@ -16,7 +16,7 @@ class Bullet {
         ctx.translate(this.pos.x, this.pos.y);
         ctx.rotate(-this.direction);
         ctx.fillStyle = "yellow";
-        ctx.fillRect(-this.length, -2, this.length * 2, 4);
+        ctx.fillRect(-this.length, -1, this.length * 2, 2);
         ctx.restore();
     }
     destroy() {

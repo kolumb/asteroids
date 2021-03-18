@@ -1,5 +1,5 @@
 class Ship {
-    constructor (pos, direction = Math.PI / 2, size = 10) {
+    constructor (pos, size = 10, direction = Math.PI / 2) {
         this.pos = pos;
         this.direction = direction;
         this.vel = new Vector();
@@ -7,6 +7,7 @@ class Ship {
         this.laserSearching = false
         this.laserShooting = false;
         this.targetedAsteroid = null;
+        this.lastShotFrame = 0;
     }
     update () {
         const probePos = this.pos.add(this.vel);
@@ -52,8 +53,11 @@ class Ship {
             }
         }
         if (this.shot) {
-            this.shot = false;
-            bullets.push(new Bullet(gun, this.direction));
+            if (frameCount - this.lastShotFrame > SHOOT_COOLDOWN) {
+                this.vel.addMut(Vector.fromAngle(this.direction).scale(-0.02))
+                bullets.push(new Bullet(gun, this.direction));
+                this.lastShotFrame = frameCount;
+            }
         }
     }
     draw () {
@@ -66,7 +70,7 @@ class Ship {
         ctx.lineTo(-this.size / 4, 0            );
         ctx.lineTo(-this.size / 2,-this.size / 2);
         ctx.closePath();
-        ctx.strokeStyle = "white";
+        ctx.strokeStyle = "#baf";
         ctx.stroke();
         if (Input.up) {
             ctx.beginPath();
