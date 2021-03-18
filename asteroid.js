@@ -29,7 +29,7 @@ class Asteroid {
     }
     split (direction) {
         this.destroy();
-        if (this.size > 16) {
+        if (this.size >= MIN_ASTEROID_SIZE * 2) {
             const dir1 = Vector.fromAngle(direction + Math.PI / 3);
             const dir2 = Vector.fromAngle(direction - Math.PI / 3);
             const pos1 = this.pos.add(dir1.scale(this.size))

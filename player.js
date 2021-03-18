@@ -3,6 +3,7 @@ class Player {
         this.ship = ship;
         this.rotationSpeed = 0.1;
         this.thrust = 0.1;
+        this.score = 0;
     }
     update () {
         if (gameOver) {

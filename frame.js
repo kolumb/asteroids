@@ -8,6 +8,7 @@ function tick() {
             if (a.pos.distEuclidean(b.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
                 a.split(b.pos.angleTo(a.pos), b.speed);
                 b.destroy();
+                player.score += Math.floor(a.size / MIN_ASTEROID_SIZE);
             }
         })
         if (player.ship.pos.distEuclidean(a.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
@@ -18,6 +19,7 @@ function tick() {
             if (!gameOver) {
                 setTimeout(() => {
                     MenuElem.classList.remove("hidden");
+                    ScoreElem.textContent = player.score;
                 }, 1000);
                 gameOver = true;
             }
@@ -96,6 +98,10 @@ function render() {
     ctx.fillStyle = "#e11";
     ctx.fillRect(10 + i*50, 10, player.ship.laserEnergy%1*40, 8);
 
+    ctx.fillStyle = "white";
+    ctx.textAlign = "right";
+    ctx.font = "20px sans-serif";
+    ctx.fillText(player.score, width - 10, 20);
 }
 
 function frame() {
