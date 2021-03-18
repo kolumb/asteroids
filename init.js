@@ -24,6 +24,7 @@ updateSize();
 const bullets = [];
 const player = new Player(new Ship(new Vector(width / 2, height / 2), 13));
 const asteroids = [];
+const ufos = [new UFO(new Vector(width / 3, height / 3))];
 function spawnAsteroid() {
     if (Math.random() < 0.5) {
         var x = Math.random() * width;

@@ -1,8 +1,9 @@
 "use strict";
 function tick() {
     player.update();
+    ufos.forEach(u => u.update());
     asteroids.forEach(a => a.update());
-    bullets.forEach(a => a.update());
+    bullets.forEach(b => b.update());
     asteroids.forEach(a => {
         bullets.forEach(b => {
             if (a.pos.distEuclidean(b.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
@@ -92,6 +93,7 @@ function render() {
     player.draw();
     asteroids.forEach(a => a.draw());
     bullets.forEach(a => a.draw());
+    ufos.forEach(u => u.draw());
     ctx.fillStyle = "#e11";
     ctx.lineWidth = 3;
     ctx.strokeStyle = "#ccc";
