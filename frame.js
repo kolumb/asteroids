@@ -19,12 +19,29 @@ function tick() {
             a.split(player.ship.pos.angleTo(a.pos));
             if (!gameOver) {
                 player.ship.shot = false;
-                setTimeout(() => {
-                    MenuElem.classList.remove("hidden");
-                    ScoreElem.textContent = player.score;
-                }, 1000);
+                setTimeout(gameOverHandler, 1000);
                 gameOver = true;
             }
+        }
+    });
+    ufos.forEach(u => {
+        bullets.forEach(b => {
+            if (u.pos.distEuclidean(b.pos) < u.size ** 2) {
+                b.destroy();
+                u.health--;
+                const playerToUFO = u.pos.sub(player.ship.pos);
+                u.target = playerToUFO.add(u.pos).scale(10);
+                u.pos.addMut(playerToUFO.clamp(10));
+                if (u.health <= 0) {
+                    u.destroy();
+                    player.score += 16;
+                }
+            }
+        });
+        if (!gameOver && u.pos.distEuclidean(player.ship.pos) < (u.size + player.ship.size) ** 2) {
+            gameOver = true;
+            player.ship.abducted = true;
+            setTimeout(gameOverHandler, 1000);
         }
     });
     for (let i = 0; i < asteroids.length - 1; i++) {
@@ -85,6 +102,16 @@ function tick() {
     if (frameCount > nextAsteroidSpawn) {
         if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
         nextAsteroidSpawn = frameCount + asteroids.length * 6;
+        if (ufos.length < player.score / 100 && Math.random() < 0.4) {
+            if (Math.random() < 0.5) {
+                var x = Math.random() * width;
+                var y = Math.random() < 0.5 ? -100 : height + 100;
+            } else {
+                var x = Math.random() < 0.5 ? -100 : width + 100;
+                var y = Math.random() * height;
+            }
+            ufos.push(new UFO(new Vector(x, y)))
+        }
     }
 }
 function render() {
@@ -108,7 +135,7 @@ function render() {
     ctx.fillStyle = "white";
     ctx.textAlign = "right";
     ctx.font = "20px sans-serif";
-    ctx.fillText(player.score, width - 10, 20);
+    ctx.fillText(player.score, width - 10, 25);
 }
 
 function frame() {

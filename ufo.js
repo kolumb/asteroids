@@ -1,8 +1,9 @@
 class UFO {
-    constructor (pos, size = 10) {
+    constructor (pos, size = 20) {
         this.pos = pos;
         this.size = size;
         this.target = player.ship.pos;
+        this.health = 3;
     }
     update () {
         if (Math.random() < 0.05) {
@@ -11,18 +12,21 @@ class UFO {
         const vel = this.target.sub(this.pos);
         this.pos.addMut(vel.clamp(2));
     }
+    destroy () {
+        ufos.splice(ufos.indexOf(this), 1);
+    }
     draw () {
         ctx.save();
         ctx.translate(this.pos.x, this.pos.y);
         ctx.beginPath();
-        ctx.arc(0,-3*this.size/4,8,-9*Math.PI/5,-6*Math.PI/5,true);
+        ctx.arc(0,-3*this.size/8,8,-9*Math.PI/5,-6*Math.PI/5,true);
         ctx.fillStyle = "white";
         ctx.fill();
         ctx.beginPath();
-        ctx.moveTo(-this.size * 2, 0);
-        ctx.arcTo(0, -this.size * 2, this.size * 2, 0, this.size * 2.8);
-        ctx.lineTo(this.size * 2, 0);
-        ctx.arcTo(0, this.size * 2, -this.size * 2, 0, this.size * 2.8);
+        ctx.moveTo(-this.size, 0);
+        ctx.arcTo(0, -this.size, this.size, 0, this.size * 1.4);
+        ctx.lineTo(this.size, 0);
+        ctx.arcTo(0, this.size, -this.size, 0, this.size * 1.4);
         ctx.closePath();
         ctx.strokeStyle = "white";
         ctx.stroke();

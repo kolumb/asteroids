@@ -24,7 +24,7 @@ updateSize();
 const bullets = [];
 const player = new Player(new Ship(new Vector(width / 2, height / 2), 13));
 const asteroids = [];
-const ufos = [new UFO(new Vector(width / 3, height / 3))];
+const ufos = [];
 function spawnAsteroid() {
     if (Math.random() < 0.5) {
         var x = Math.random() * width;
@@ -43,6 +43,10 @@ function spawnAsteroid() {
             Math.random() * 2 * angleSpeed - angleSpeed
         )
     );
+}
+const gameOverHandler = () => {
+    MenuElem.classList.remove("hidden");
+    ScoreElem.textContent = player.score;
 }
 
 frame();

@@ -7,8 +7,9 @@ class Ship {
         this.laserEnergy = 9.8;
         this.laserSearching = false;
         this.laserShooting = false;
-        this.targetedAsteroid = null;
+        this.laserTarget = null;
         this.lastShotFrame = 0;
+        this.abducted = false;
     }
     update () {
         this.laserEnergy = Math.min(this.laserEnergy + 0.002, 10);
@@ -33,6 +34,14 @@ class Ship {
                     }
                 }
             })
+            ufos.forEach(u => {
+                const distToLazer = distPointToLine(u.pos, gun, laserCap);
+                if (distToLazer < u.size) {
+                    if (direction.dot(this.pos.sub(u.pos)) < 0) {
+                        candidates.push(u);
+                    }
+                }
+            })
             let closestOne;
             let minDist = Infinity;
             candidates.forEach(a => {
@@ -44,16 +53,20 @@ class Ship {
             })
             if (closestOne) {
                 this.laserShooting = true;
-                this.targetedAsteroid = closestOne;
+                this.laserTarget = closestOne;
                 this.miningStart = frameCount;
             }
         }
         if (this.laserShooting) {
-            this.laserEnergy -= 1 / (this.targetedAsteroid.size * 2);
-            if (frameCount - this.miningStart > this.targetedAsteroid.size * 2) {
+            this.laserEnergy -= 1 / (this.laserTarget.size * 2);
+            if (frameCount - this.miningStart > this.laserTarget.size * 2) {
                 this.laserShooting = false;
-                player.score += 2 ** Math.floor(this.targetedAsteroid.size / MIN_ASTEROID_SIZE) / 2;
-                asteroids.splice(asteroids.indexOf(this.targetedAsteroid), 1);
+                player.score += 2 ** Math.floor(this.laserTarget.size / MIN_ASTEROID_SIZE) / 2;
+                if (this.laserTarget.target) {
+                    ufos.splice(ufos.indexOf(this.laserTarget), 1);
+                } else {
+                    asteroids.splice(asteroids.indexOf(this.laserTarget), 1);
+                }
             }
         }
         if (this.shot) {
@@ -99,7 +112,7 @@ class Ship {
             const direction = Vector.fromAngle(this.direction);
             const laserStart = this.pos.add(direction.scale(this.size));
             ctx.moveTo(laserStart.x, laserStart.y);
-            ctx.lineTo(this.targetedAsteroid.pos.x, this.targetedAsteroid.pos.y);
+            ctx.lineTo(this.laserTarget.pos.x, this.laserTarget.pos.y);
             ctx.strokeStyle = "red";
             ctx.lineWidth = 3;
             ctx.stroke();

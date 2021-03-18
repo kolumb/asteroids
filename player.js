@@ -25,6 +25,6 @@ class Player {
         this.ship.update();
     }
     draw () {
-        this.ship.draw();
+        if(!this.ship.abducted) this.ship.draw();
     }
 }
