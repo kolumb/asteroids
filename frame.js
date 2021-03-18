@@ -34,6 +34,14 @@ function tick() {
                 const playerToUFO = u.pos.sub(player.ship.pos);
                 u.target = playerToUFO.add(u.pos).scale(10);
                 u.pos.addMut(playerToUFO.clamp(10));
+                const pool = particles.filter(p => p.lifetime <= 0);
+                if (pool.length) {
+                    for (let i = 0; i < u.size/4; i++) {
+                        pool[i].lifetime = 100;
+                        pool[i].pos = b.pos.copy();
+                        pool[i].vel = Vector.fromAngle(b.direction + Math.PI / 2 + Math.random() * 1.6 - 0.8).scale(8*Math.random() - 4);
+                    }
+                }
                 if (u.health <= 0) {
                     u.destroy();
                     player.score += 16;
