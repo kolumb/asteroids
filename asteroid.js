@@ -34,8 +34,8 @@ class Asteroid {
             const dir2 = Vector.fromAngle(direction - Math.PI / 3);
             const pos1 = this.pos.add(dir1.scale(this.size))
             const pos2 = this.pos.add(dir2.scale(this.size))
-            const a1 = new Asteroid(pos1, this.size / 2, this.vel.add(dir1.scale(BULLET_SPEED / 5)), this.angleSpeed + VEL_TO_ROT * BULLET_SPEED / 10)
-            const a2 = new Asteroid(pos2, this.size / 2, this.vel.add(dir2.scale(BULLET_SPEED / 5)), this.angleSpeed - VEL_TO_ROT * BULLET_SPEED / 10)
+            const a1 = new Asteroid(pos1, 2 * this.size / 3, this.vel.add(dir1.scale(BULLET_SPEED / 5)), this.angleSpeed + VEL_TO_ROT * BULLET_SPEED / 20)
+            const a2 = new Asteroid(pos2, 2 * this.size / 3, this.vel.add(dir2.scale(BULLET_SPEED / 5)), this.angleSpeed - VEL_TO_ROT * BULLET_SPEED / 20)
             asteroids.push(a1)
             asteroids.push(a2)
         }

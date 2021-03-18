@@ -46,7 +46,7 @@ class Ship {
             }
         }
         if (this.laserShooting) {
-            if (frameCount - this.miningStart > MINING_DURATION) {
+            if (frameCount - this.miningStart > this.targetedAsteroid.size * 2) {
                 this.laserShooting = false;
                 asteroids.splice(asteroids.indexOf(this.targetedAsteroid), 1);
             }

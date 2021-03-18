@@ -27,32 +27,34 @@ function tick() {
 
                 const penetrationPercentage = 1 - dist / Math.sqrt(touchEuclidean)
                 const fix2to1 = dist2to1.scale(penetrationPercentage)
-                a1.pos.addMut(fix2to1.scale(2 * a2Influence));
-                a2.pos.subMut(fix2to1.scale(2 * a1Influence));
+                a1.pos.addMut(fix2to1.scale(3 * a2Influence));
+                a2.pos.subMut(fix2to1.scale(3 * a1Influence));
 
-                a1.oldVel = a1.vel.copy();
-                a2.oldVel = a2.vel.copy();
+                if(debug) {
+                    a1.oldVel = a1.vel.copy();
+                    a2.oldVel = a2.vel.copy();
+                }
                 const a1Speed = dist1to2.dot(a1.vel) / dist;
                 const a2Speed = dist2to1.dot(a2.vel) / dist;
                 if (a1Speed > 0) {
                     const force1to2 = dist1to2.normalized().scale(a1Speed * ASTEROID_RIGIDITY);
-                    a1.vel.subMut(force1to2.scale(a1Influence * 6.5));
-                    a2.vel.addMut(force1to2.scale(a1Influence * 6.5));
+                    a1.vel.subMut(force1to2.scale(a2Influence * 180 / MAX_ASTEROID_SIZE));
+                    a2.vel.addMut(force1to2.scale(a1Influence * 180 / MAX_ASTEROID_SIZE));
                     const perpendicularDir1to2 = dist1to2.y > 0 ? 1 : -1;
                     const perpendicular1to2Normalized = new Vector(perpendicularDir1to2, -perpendicularDir1to2 * dist1to2.x / dist1to2.y);
                     a1.perp = perpendicular1to2Normalized;
-                    a1.oldAngleSeed = a1.angleSpeed;
+                    if(debug) a1.oldAngleSeed = a1.angleSpeed;
                     a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
                     a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
                 }
                 if (a2Speed > 0) {
                     const force2to1 = dist2to1.normalized().scale(a2Speed * ASTEROID_RIGIDITY);
-                    a1.vel.addMut(force2to1.scale(a2Influence * 6.5));
-                    a2.vel.subMut(force2to1.scale(a2Influence * 6.5));
+                    a1.vel.addMut(force2to1.scale(a2Influence * 180 / MAX_ASTEROID_SIZE));
+                    a2.vel.subMut(force2to1.scale(a1Influence * 180 / MAX_ASTEROID_SIZE));
                     const perpendicularDir2to1 = dist2to1.y > 0 ? 1 : -1;
                     const perpendicular2to1Normalized = new Vector(perpendicularDir2to1, -perpendicularDir2to1 * dist2to1.x / dist2to1.y);
                     a2.perp = perpendicular2to1Normalized;
-                    a2.oldAngleSeed = a2.angleSpeed;
+                    if(debug) a2.oldAngleSeed = a2.angleSpeed;
                     a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
                     a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
                 }

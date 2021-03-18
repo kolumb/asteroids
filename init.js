@@ -8,7 +8,8 @@ let debugCollisions = false;
 const EDGE_BOUNCINESS = 0.7;
 const ASTEROID_MAX_HEIGHT = 18;
 const ASTEROID_RIGIDITY = 0.9;
-const VEL_TO_ROT = 0.1;
+const MAX_ASTEROID_SIZE = 50; // minimum 20
+const VEL_TO_ROT = 0.2;
 let frameCount = 0;
 const MINING_DURATION = 20;
 const BULLET_SPEED = 10;
@@ -26,7 +27,7 @@ for (let i = 0; i < 50; i++) {
     asteroids.push(
         new Asteroid(
             new Vector(x, y),
-            8 + Math.random() * 30, // size
+            8 + (Math.random() ** 3) * MAX_ASTEROID_SIZE,
             new Vector(Math.random() * vel * 2 - vel, Math.random() * vel * 2 - vel),
             Math.random() * 2 * angleSpeed - angleSpeed
         )
