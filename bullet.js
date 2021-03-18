@@ -1,7 +1,7 @@
 class Bullet {
-    constructor (pos, speed, direction) {
+    constructor (pos, direction) {
         this.pos = pos;
-        this.vel = Vector.fromAngle(direction).scale(speed);
+        this.vel = Vector.fromAngle(direction).scale(BULLET_SPEED);
         this.direction = direction;
         this.length = 10;
     }

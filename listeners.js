@@ -40,7 +40,7 @@ const keydownHandler = function(e) {
             player.ship.shot = true;
             break;
         case "KeyF":
-            player.ship.laser = true;
+            if (!player.ship.laserShooting) player.ship.laserSearching = true;
             break;
         case "KeyP":
             pause = !pause;
@@ -78,9 +78,8 @@ window.addEventListener("keydown", keydownHandler);
 
 const keyupHandler = function(e) {
     switch (e.code) {
-        case "Space":
         case "KeyF":
-            player.ship.laser = false;
+            player.ship.laserSearching = false;
             break;
         case "ArrowUp":
         case "KeyW":

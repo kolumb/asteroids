@@ -4,8 +4,8 @@ class Ship {
         this.direction = direction;
         this.vel = new Vector();
         this.size = size;
-        this.laser = false;
-        this.mining = false;
+        this.laserSearching = false
+        this.laserShooting = false;
         this.targetedAsteroid = null;
     }
     update () {
@@ -19,7 +19,7 @@ class Ship {
         this.pos.addMut(this.vel);
         const direction = Vector.fromAngle(this.direction);
         const gun = this.pos.add(direction.scale(this.size));
-        if (this.laser && !this.mining) {
+        if (this.laserSearching && !this.laserShooting) {
             const laserCap = this.pos.add(direction.scale(bigger));
             const candidates = [];
             asteroids.forEach(a => {
@@ -40,22 +40,20 @@ class Ship {
                 }
             })
             if (closestOne) {
-                this.laser = false;
+                this.laserShooting = true;
                 this.targetedAsteroid = closestOne;
-                this.mining = true;
                 this.miningStart = frameCount;
             }
         }
-        if (this.mining) {
+        if (this.laserShooting) {
             if (frameCount - this.miningStart > MINING_DURATION) {
-                this.mining = false;
-                this.laser = false;
+                this.laserShooting = false;
                 asteroids.splice(asteroids.indexOf(this.targetedAsteroid), 1);
             }
         }
         if (this.shot) {
             this.shot = false;
-            bullets.push(new Bullet(gun, 10, this.direction));
+            bullets.push(new Bullet(gun, this.direction));
         }
     }
     draw () {
@@ -78,16 +76,16 @@ class Ship {
             ctx.strokeStyle = "orange";
             ctx.stroke();
         }
-        if (!this.mining && this.laser) {
+        if (this.laserSearching && !this.laserShooting) {
             ctx.beginPath();
             ctx.moveTo(this.size, 0);
             ctx.lineTo(bigger, 0);
             ctx.strokeStyle = "red";
-            ctx.lineWidth = 3;
+            ctx.lineWidth = 1;
             ctx.stroke();
         }
         ctx.restore();
-        if (this.mining) {
+        if (this.laserShooting) {
             ctx.save();
             ctx.beginPath();
             const direction = Vector.fromAngle(this.direction);

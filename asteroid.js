@@ -27,6 +27,22 @@ class Asteroid {
         if (this.pos.y - this.maxSize > height) this.pos.y = -this.maxSize;
         this.angle += this.angleSpeed;
     }
+    split (direction) {
+        this.destroy();
+        if (this.size > 16) {
+            const dir1 = Vector.fromAngle(direction + Math.PI / 3);
+            const dir2 = Vector.fromAngle(direction - Math.PI / 3);
+            const pos1 = this.pos.add(dir1.scale(this.size))
+            const pos2 = this.pos.add(dir2.scale(this.size))
+            const a1 = new Asteroid(pos1, this.size / 2, this.vel.add(dir1.scale(BULLET_SPEED / 5)), this.angleSpeed + VEL_TO_ROT * BULLET_SPEED / 10)
+            const a2 = new Asteroid(pos2, this.size / 2, this.vel.add(dir2.scale(BULLET_SPEED / 5)), this.angleSpeed - VEL_TO_ROT * BULLET_SPEED / 10)
+            asteroids.push(a1)
+            asteroids.push(a2)
+        }
+    }
+    destroy () {
+        asteroids.splice(asteroids.indexOf(this), 1);
+    }
     draw () {
         ctx.save();
         ctx.translate(this.pos.x, this.pos.y);

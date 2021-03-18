@@ -8,8 +8,10 @@ let debugCollisions = false;
 const EDGE_BOUNCINESS = 0.7;
 const ASTEROID_MAX_HEIGHT = 18;
 const ASTEROID_RIGIDITY = 0.9;
+const VEL_TO_ROT = 0.1;
 let frameCount = 0;
 const MINING_DURATION = 20;
+const BULLET_SPEED = 10;
 
 updateSize();
 

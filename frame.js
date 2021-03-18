@@ -3,6 +3,14 @@ function tick() {
     player.update();
     asteroids.forEach(a => a.update());
     bullets.forEach(a => a.update());
+    asteroids.forEach(a => {
+        bullets.forEach(b => {
+            if (a.pos.distEuclidean(b.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
+                a.split(b.pos.angleTo(a.pos), b.speed);
+                b.destroy();
+            }
+        })
+    });
     for (let i = 0; i < asteroids.length - 1; i++) {
         for (let j = i + 1; j < asteroids.length; j++) {
             const a1 = asteroids[i];
@@ -26,7 +34,6 @@ function tick() {
                 a2.oldVel = a2.vel.copy();
                 const a1Speed = dist1to2.dot(a1.vel) / dist;
                 const a2Speed = dist2to1.dot(a2.vel) / dist;
-                const velToRot = 0.1;
                 if (a1Speed > 0) {
                     const force1to2 = dist1to2.normalized().scale(a1Speed * ASTEROID_RIGIDITY);
                     a1.vel.subMut(force1to2.scale(a1Influence * 6.5));
@@ -35,8 +42,8 @@ function tick() {
                     const perpendicular1to2Normalized = new Vector(perpendicularDir1to2, -perpendicularDir1to2 * dist1to2.x / dist1to2.y);
                     a1.perp = perpendicular1to2Normalized;
                     a1.oldAngleSeed = a1.angleSpeed;
-                    a2.angleSpeed -= velToRot * a1Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
-                    a1.angleSpeed -= velToRot * a2Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
+                    a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
+                    a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
                 }
                 if (a2Speed > 0) {
                     const force2to1 = dist2to1.normalized().scale(a2Speed * ASTEROID_RIGIDITY);
@@ -46,8 +53,8 @@ function tick() {
                     const perpendicular2to1Normalized = new Vector(perpendicularDir2to1, -perpendicularDir2to1 * dist2to1.x / dist2to1.y);
                     a2.perp = perpendicular2to1Normalized;
                     a2.oldAngleSeed = a2.angleSpeed;
-                    a1.angleSpeed -= velToRot * a2Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
-                    a2.angleSpeed -= velToRot * a1Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
+                    a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
+                    a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
                 }
 
                 const deltaAngleSpeed = a1.angleSpeed + a2.angleSpeed;
