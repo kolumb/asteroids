@@ -40,12 +40,11 @@ class Asteroid {
             asteroids.push(a2)
         }
         const pool = particles.filter(p => p.lifetime <= 0);
-        if (pool.length) {
-            for (let i = 0; i < this.size; i++) {
-                pool[i].lifetime = 100;
-                pool[i].pos = this.pos.copy();
-                pool[i].vel = Vector.fromAngle(direction + Math.random() * 0.8 - 0.4).scale(-Math.random()*3 + 1).add(this.vel);
-            }
+        for (let i = 0; i < Math.min(pool.length, this.size); i++) {
+            pool[i].lifetime = 100;
+            pool[i].pos = this.pos.copy();
+            pool[i].vel = Vector.fromAngle(direction + Math.random() * 0.8 - 0.4).scale(-Math.random()*3 + 1).add(this.vel);
+            pool[i].color = "255, 255, 255";
         }
     }
     destroy () {
