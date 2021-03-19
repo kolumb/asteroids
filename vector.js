@@ -3,65 +3,51 @@ class Vector {
         this.x = x;
         this.y = y;
     }
-    length() {
-        return Math.sqrt(this.x ** 2 + this.y ** 2);
-    }
-    normalized() {
-        return this.scale(1 / this.length());
-    }
-    normalizeMut() {
-        this.scaleMut(1 / this.length());
-    }
-    add(v) {
-        let x = this.x + v.x;
-        let y = this.y + v.y;
-        return new Vector(x, y);
-    }
+    length() { return Math.hypot(this.x, this.y); }
+
+    normalized() { return this.scale(1 / this.length()); }
+
+    normalizeMut() { this.scaleMut(1 / this.length()); }
+
+    add(v) { return new Vector(this.x + v.x, this.y + v.y); }
+
     addMut(v) {
         this.x += v.x;
         this.y += v.y;
         return this;
     }
-    sub(v) {
-        return this.add(v.scale(-1));
-    }
+    sub(v) { return this.add(v.scale(-1)); }
+
     subMut(v) {
         this.x -= v.x;
         this.y -= v.y;
         return this;
     }
-    dot(v) {
-        return this.x * v.x + this.y * v.y;
-    }
-    mult(v) {
-        return new Vector(this.x * v.x, this.y * v.y);
-    }
-    dist(v) {
-        const dx = this.x - v.x;
-        const dy = this.y - v.y;
-        return Math.sqrt(dx ** 2 + dy ** 2);
-    }
+    dot(v) { return this.x * v.x + this.y * v.y; }
+
+    mult(v) { return new Vector(this.x * v.x, this.y * v.y); }
+
+    dist(v) { return Math.hypot(this.x - v.x, this.y - v.y); }
+
     distEuclidean(v) {
         const dx = this.x - v.x;
         const dy = this.y - v.y;
-        return dx ** 2 + dy ** 2;
+        return dx * dx + dy * dy;
     }
     angleTo(v) {
         const dx = v.x - this.x;
         const dy = v.y - this.y;
         return Math.atan2(-dy, dx);
     }
-    scale(f) {
-        return new Vector(this.x * f, this.y * f);
-    }
+    scale(f) { return new Vector(this.x * f, this.y * f); }
+
     scaleMut(f) {
         this.x *= f;
         this.y *= f;
         return this;
     }
-    copy() {
-        return new Vector(this.x, this.y);
-    }
+    copy() { return new Vector(this.x, this.y); }
+
     set(x, y) {
         this.x = x;
         this.y = y;
@@ -83,9 +69,8 @@ class Vector {
             return this;
         }
     }
-    swap() {
-        return new Vector(this.y, this.x);
-    }
+    swap() { return new Vector(this.y, this.x); }
+
     static fromAngle(a) {
         return new Vector(Math.cos(a), -Math.sin(a));
     }
