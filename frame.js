@@ -14,7 +14,7 @@ function tick() {
                 player.score += Math.floor(a.size / MIN_ASTEROID_SIZE);
             }
         })
-        if (player.ship.pos.distEuclidean(a.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
+        if (player.ship.pos.distEuclidean(a.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2 + player.ship.size / 2) ** 2) {
             const collisionVector = player.ship.pos.sub(a.pos);
             player.ship.vel.addMut(collisionVector.scale(0.05));
             player.ship.pos.addMut(collisionVector.scale(0.05));
