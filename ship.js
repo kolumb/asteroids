@@ -21,6 +21,7 @@ class Ship {
             this.vel.y *= -EDGE_BOUNCINESS;
         }
         this.pos.addMut(this.vel);
+        if (gameOver) return;
         const direction = Vector.fromAngle(this.direction);
         const gun = this.pos.add(direction.scale(this.size));
         if (this.laserSearching && !this.laserShooting && this.laserEnergy > 1) {
