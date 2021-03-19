@@ -67,17 +67,21 @@ class Vector {
         this.y = y;
         return this;
     }
-    clamp(length) {
-        if (this.length() < length) return this;
-        const angle = Math.atan2(this.y, this.x);
-        return new Vector(Math.cos(angle) * length, Math.sin(angle) * length);
+    clamp(max) {
+        const length = this.length();
+        if (length > max && length > 0) {
+            return this.scale(max / length);
+        } else {
+            return this;
+        }
     }
-    clampMut(length) {
-        if (this.length() < length) return this;
-        const angle = Math.atan2(this.y, this.x);
-        this.x = Math.cos(angle) * length;
-        this.y = Math.sin(angle) * length;
-        return this;
+    clampMut(max) {
+        const length = this.length();
+        if (length > max && length > 0) {
+            return this.scaleMut(max / length);
+        } else {
+            return this;
+        }
     }
     swap() {
         return new Vector(this.y, this.x);
