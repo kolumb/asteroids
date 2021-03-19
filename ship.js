@@ -117,6 +117,13 @@ class Ship {
             ctx.lineWidth = 3;
             ctx.stroke();
             ctx.lineWidth = 1;
+            const pool = particles.filter(p => p.lifetime <= 0);
+            for (let i = 0; i < Math.min(pool.length, this.laserTarget.size/20); i++) {
+                pool[i].lifetime = 100;
+                pool[i].pos = this.laserTarget.pos.copy();
+                pool[i].vel = Vector.fromAngle(Math.PI * 2 * Math.random()).scale(4*Math.random() - 2);
+                pool[i].color = "255, 0, 0";
+            }
         }
     }
 }
