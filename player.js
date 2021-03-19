@@ -1,25 +1,21 @@
 class Player {
     constructor (ship) {
         this.ship = ship;
-        this.rotationSpeed = 0.05;
-        this.thrust = 0.05;
         this.score = 0;
     }
-    update () {
+    update (dt) {
         if (gameOver) {
-            this.ship.direction += this.rotationSpeed * 2;
+            this.ship.turnLeft(dt * 3);
             Input.up = false;
         } else {
             if (Input.left) {
-                this.ship.direction += this.rotationSpeed;
+                this.ship.turnLeft(dt);
             }
             if (Input.right) {
-                this.ship.direction -= this.rotationSpeed;
+                this.ship.turnRight(dt);
             }
             if (Input.up) {
-                this.ship.vel
-                    .addMut(Vector.fromAngle(this.ship.direction)
-                        .scale(this.thrust));
+                this.ship.thrust(dt);
             }
         }
         this.ship.update();

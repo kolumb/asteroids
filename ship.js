@@ -4,12 +4,24 @@ class Ship {
         this.size = size;
         this.direction = direction;
         this.vel = new Vector();
+        this.rotationSpeed = 0.003;
+        this.thrustPower = 0.003;
         this.laserEnergy = 9.8;
         this.laserSearching = false;
         this.laserShooting = false;
         this.laserTarget = null;
         this.lastShotFrame = 0;
         this.abducted = false;
+    }
+    turnLeft (dt) {
+        this.direction += this.rotationSpeed * dt;
+    }
+    turnRight (dt) {
+        this.direction -= this.rotationSpeed * dt;
+    }
+    thrust (dt) {
+        this.vel.addMut(Vector.fromAngle(this.direction)
+            .scale(this.thrustPower * dt));
     }
     update () {
         this.laserEnergy = Math.min(this.laserEnergy + 0.002, 10);

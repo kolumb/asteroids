@@ -1,6 +1,6 @@
 "use strict";
-function tick() {
-    player.update();
+function tick(dt) {
+    player.update(dt);
     ufos.forEach(u => u.update());
     asteroids.forEach(a => a.update());
     bullets.forEach(b => b.update());
@@ -147,10 +147,11 @@ function render() {
     ctx.font = "20px sans-serif";
     ctx.fillText(player.score, width - 10, 25);
 }
-
-function frame() {
+function frame(time) {
+    const dt = time - lastFrameTime;
+    lastFrameTime = time;
     frameCount++;
-    tick();
+    if (dt < 1000) tick(dt);
     render();
     if (pause === false) {
         requestAnimationFrame(frame);

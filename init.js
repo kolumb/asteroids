@@ -18,6 +18,7 @@ let nextAsteroidSpawn = 0;
 const MINING_DURATION = 20;
 const BULLET_SPEED = 10;
 const SHOOT_COOLDOWN = 5;
+var lastFrameTime = 0;
 
 updateSize();
 
