@@ -74,10 +74,11 @@ class Ship {
             this.laserEnergy -= 1 / (this.laserTarget.size * 2);
             if (frameCount - this.miningStart > this.laserTarget.size * 2) {
                 this.laserShooting = false;
-                player.score += 2 ** Math.floor(this.laserTarget.size / MIN_ASTEROID_SIZE) / 2;
                 if (this.laserTarget.target) {
+                    player.score += this.laserTarget.size;
                     ufos.splice(ufos.indexOf(this.laserTarget), 1);
                 } else {
+                    player.score += 2 ** Math.floor(this.laserTarget.size / MIN_ASTEROID_SIZE) / 2;
                     asteroids.splice(asteroids.indexOf(this.laserTarget), 1);
                 }
             }
