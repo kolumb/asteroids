@@ -4,9 +4,11 @@ class Ship {
         this.size = size;
         this.direction = direction;
         this.vel = new Vector();
-        this.rotationSpeed = 0.003;
-        this.thrustPower = 0.003;
+        this.rotationSpeed = 0.05;
+        this.thrustPower = 0.05;
+        this.knockback = 0.02;
         this.laserEnergy = 9.8;
+        this.laserEnergyRestorationSpeed = 0.002;
         this.laserSearching = false;
         this.laserShooting = false;
         this.laserTarget = null;
@@ -23,16 +25,16 @@ class Ship {
         this.vel.addMut(Vector.fromAngle(this.direction)
             .scale(this.thrustPower * dt));
     }
-    update () {
-        this.laserEnergy = Math.min(this.laserEnergy + 0.002, 10);
-        const probePos = this.pos.add(this.vel);
+    update (dt) {
+        this.laserEnergy = Math.min(this.laserEnergy + this.laserEnergyRestorationSpeed * dt, 10);
+        const probePos = this.pos.add(this.vel.scale(dt));
         if (probePos.x < 0 || probePos.x > width) {
             this.vel.x *= -EDGE_BOUNCINESS;
         }
         if (probePos.y < 0 || probePos.y > height) {
             this.vel.y *= -EDGE_BOUNCINESS;
         }
-        this.pos.addMut(this.vel);
+        this.pos.addMut(this.vel.scale(dt));
         if (gameOver) return;
         const direction = Vector.fromAngle(this.direction);
         const gun = this.pos.add(direction.scale(this.size));
@@ -71,8 +73,8 @@ class Ship {
             }
         }
         if (this.laserShooting) {
-            this.laserEnergy -= 1 / (this.laserTarget.size * 2);
-            if (frameCount - this.miningStart > this.laserTarget.size * 2) {
+            this.laserEnergy -= dt / (this.laserTarget.size * 2);
+            if (frameCount - this.miningStart > this.laserTarget.size * 2 / dt) {
                 this.laserShooting = false;
                 if (this.laserTarget.target) {
                     player.score += this.laserTarget.size;
@@ -84,8 +86,8 @@ class Ship {
             }
         }
         if (this.shot) {
-            if (frameCount - this.lastShotFrame > SHOOT_COOLDOWN) {
-                this.vel.addMut(Vector.fromAngle(this.direction).scale(-0.02))
+            if (frameCount - this.lastShotFrame > SHOOT_COOLDOWN / dt) {
+                this.vel.addMut(Vector.fromAngle(this.direction).scale(-this.knockback * dt))
                 bullets.push(new Bullet(gun, this.direction));
                 this.lastShotFrame = frameCount;
             }

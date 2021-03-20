@@ -1,10 +1,10 @@
 "use strict";
 function tick(dt) {
     player.update(dt);
-    ufos.forEach(u => u.update());
-    asteroids.forEach(a => a.update());
-    bullets.forEach(b => b.update());
-    particles.forEach(p => p.update());
+    ufos.forEach(u => u.update(dt));
+    asteroids.forEach(a => a.update(dt));
+    bullets.forEach(b => b.update(dt));
+    particles.forEach(p => p.update(dt));
     asteroids.forEach(a => {
         bullets.forEach(b => {
             if (a.pos.distEuclidean(b.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
@@ -115,7 +115,7 @@ function tick(dt) {
     if (frameCount > nextAsteroidSpawn) {
         if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
         nextAsteroidSpawn = frameCount + asteroids.length * 6;
-        if (ufos.length < player.score / 100 && Math.random() < 0.4) {
+        if (ufos.length < player.score / 100 && Math.random() < 0.4 * dt) {
             if (Math.random() < 0.5) {
                 var x = Math.random() * width;
                 var y = Math.random() < 0.5 ? -100 : height + 100;
@@ -155,7 +155,7 @@ function frame(time) {
     const dt = time - lastFrameTime;
     lastFrameTime = time;
     frameCount++;
-    if (dt < 1000) tick(dt);
+    if (dt < 1000) tick(dt * 0.06);
     render();
     if (pause === false) {
         requestAnimationFrame(frame);

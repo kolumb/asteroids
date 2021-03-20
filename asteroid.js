@@ -19,15 +19,15 @@ class Asteroid {
             this.points.push(new Vector(x, y));
         }
     }
-    update () {
-        this.pos.addMut(this.vel);
+    update (dt) {
+        this.pos.addMut(this.vel.scale(dt));
         if (this.pos.x + this.maxSize < 0)      this.pos.x = width + this.maxSize;
         if (this.pos.y + this.maxSize < 0)      this.pos.y = height + this.maxSize;
         if (this.pos.x - this.maxSize > width)  this.pos.x = -this.maxSize;
         if (this.pos.y - this.maxSize > height) this.pos.y = -this.maxSize;
-        this.angle += this.angleSpeed;
+        this.angle += this.angleSpeed * dt;
     }
-    split (direction, pos) {
+    split (direction) {
         this.destroy();
         if (this.size >= MIN_ASTEROID_SIZE * 2) {
             const dir1 = Vector.fromAngle(direction + Math.PI / 3);
@@ -43,7 +43,7 @@ class Asteroid {
         for (let i = 0; i < Math.min(pool.length, this.size); i++) {
             pool[i].lifetime = 100;
             pool[i].pos = this.pos.copy();
-            pool[i].vel = Vector.fromAngle(direction + Math.random() * 0.8 - 0.4).scale(-Math.random()*3 + 1).add(this.vel);
+            pool[i].vel = Vector.fromAngle(direction + Math.random() * 0.8 - 0.4).scale(-Math.random() * 3 + 1).add(this.vel);
             pool[i].color = "255, 255, 255";
         }
     }

@@ -6,10 +6,10 @@ class Particle {
         this.color = "255, 255, 255";
         this.lifetime = 0;
     }
-    update () {
+    update (dt) {
         if (this.lifetime > 0) {
-            this.lifetime--;
-            this.pos.addMut(this.vel);
+            this.lifetime -= dt;
+            this.pos.addMut(this.vel.scale(dt));
         }
     }
     draw () {

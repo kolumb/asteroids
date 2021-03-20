@@ -2,15 +2,16 @@ class UFO {
     constructor (pos, size = 20) {
         this.pos = pos;
         this.size = size;
+        this.speed = 2;
         this.target = player.ship.pos;
         this.health = 3;
     }
-    update () {
-        if (Math.random() < 0.05) {
+    update (dt) {
+        if (Math.random() < 0.05 * dt) {
             this.target = player.ship.pos.add(Vector.fromAngle(Math.random() * Math.PI * 2).scale(Math.random() * 300));
         }
         const vel = this.target.sub(this.pos);
-        this.pos.addMut(vel.clamp(2));
+        this.pos.addMut(vel.clamp(this.speed).scale(dt));
     }
     destroy () {
         ufos.splice(ufos.indexOf(this), 1);

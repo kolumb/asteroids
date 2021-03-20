@@ -5,8 +5,8 @@ class Bullet {
         this.direction = direction;
         this.length = 10;
     }
-    update() {
-        this.pos.addMut(this.vel);
+    update(dt) {
+        this.pos.addMut(this.vel.scale(dt));
         if (this.pos.x < -100 || this.pos.y < -100 || this.pos.x > width + 100 || this.pos.y > height + 100) {
             this.destroy();
         };

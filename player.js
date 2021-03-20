@@ -18,7 +18,7 @@ class Player {
                 this.ship.thrust(dt);
             }
         }
-        this.ship.update();
+        this.ship.update(dt);
     }
     draw () {
         if(!this.ship.abducted) this.ship.draw();
