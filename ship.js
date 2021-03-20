@@ -92,6 +92,17 @@ class Ship {
                 this.lastShotFrame = frameCount;
             }
         }
+        ufos.forEach(u => {
+            u.dangerous = false;
+            const distToUFOPath = distPointToLine(this.pos, u.pos, u.target);
+            if (distToUFOPath < u.targetRadius / 2) {
+                const distToUFO = u.pos.dist(this.pos);
+                const distUFOToTarget = u.pos.dist(u.target);
+                if (distToUFO < u.targetRadius || distToUFO < distUFOToTarget) {
+                    u.dangerous = true;
+                }
+            }
+        })
     }
     draw () {
         ctx.save();

@@ -36,8 +36,9 @@ function tick(dt) {
                 b.destroy();
                 u.health--;
                 const playerToUFO = u.pos.sub(player.ship.pos);
-                u.target = playerToUFO.add(u.pos).scale(10);
-                u.pos.addMut(playerToUFO.clamp(10));
+                u.target = u.getTarget(playerToUFO.scale(3).add(u.pos), lesser / 4);
+                u.nearTarget = u.getTarget(u.target, lesser / 4);
+                u.pos.addMut(playerToUFO.clamp(5));
                 const pool = particles.filter(p => p.lifetime <= 0);
                 for (let i = 0; i < Math.min(pool.length, u.size/4); i++) {
                     pool[i].lifetime = 100;
