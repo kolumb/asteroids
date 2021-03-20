@@ -9,7 +9,7 @@ class Asteroid {
         this.vel = vel;
         this.dangerous = false;
         this.points = [];
-        const numberOfPoints = size * 0.75;
+        const numberOfPoints = Math.floor(size * 0.75);
         let lastAngle = 0;
         for (let i = 0; i < numberOfPoints; i++) {
             const angleStep = (Math.random() * 1.6 + 0.2) * (Math.PI * 2 - lastAngle) / (numberOfPoints - i);
@@ -20,6 +20,17 @@ class Asteroid {
             const y = radius * Math.sin(angle);
             this.points.push(new Vector(x, y));
         }
+        const middlePoints = [];
+        let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        for (let i = 0; i < numberOfPoints; i++) {
+            middlePoints.push(this.points[i].add(this.points[(i + 1) % numberOfPoints]).scale(0.5));
+            minX = Math.min(minX, middlePoints[i].x);
+            minY = Math.min(minY, middlePoints[i].y);
+            maxX = Math.max(maxX, middlePoints[i].x);
+            maxY = Math.max(maxY, middlePoints[i].y);
+        }
+        const newCenter = new Vector((minX + maxX) * 0.5, (minY + maxY) * 0.5);
+        this.points.forEach(p => p.subMut(newCenter));
     }
     update (dt) {
         this.pos.addMut(this.vel.scale(dt));
