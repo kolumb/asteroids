@@ -101,7 +101,7 @@ function tick(dt) {
                     p1.lifetime = 50;
                     p1.pos = collisionPos.copy();
                     p1.vel = perpendicular1to2.normalized().add(a1.vel);
-                    if(debug) a1.oldAngleSeed = a1.angleSpeed;
+                    a1.oldAngleSpeed = a1.angleSpeed;
                     a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular1to2.dot(a1.vel) / perpendicular1to2.length();
                     a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular1to2.dot(a1.vel) / perpendicular1to2.length();
                 }
@@ -115,7 +115,7 @@ function tick(dt) {
                     p2.lifetime = 50;
                     p2.pos = collisionPos.copy();
                     p2.vel = perpendicular2to1.normalized().add(a2.vel);
-                    if(debug) a2.oldAngleSeed = a2.angleSpeed;
+                    a2.oldAngleSpeed = a2.angleSpeed;
                     a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular2to1.dot(a2.vel) / perpendicular2to1.length();
                     a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular2to1.dot(a2.vel) / perpendicular2to1.length();
                 }
@@ -130,7 +130,7 @@ function tick(dt) {
     if (frameCount > nextAsteroidSpawn) {
         if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
         nextAsteroidSpawn = frameCount + asteroids.length * 7;
-        if (ufos.length < player.score / 120 && Math.random() < 0.4 * dt) {
+        if (ufos.length < Math.log2(player.score / 100) + 1 && Math.random() < 0.4 * dt) {
             if (Math.random() < 0.5) {
                 var x = Math.random() * width;
                 var y = Math.random() < 0.5 ? -100 : height + 100;

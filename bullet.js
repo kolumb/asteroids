@@ -7,7 +7,10 @@ class Bullet {
     }
     update(dt) {
         this.pos.addMut(this.vel.scale(dt));
-        if (this.pos.x < -100 || this.pos.y < -100 || this.pos.x > width + 100 || this.pos.y > height + 100) {
+        if (this.pos.x < -this.length
+        ||  this.pos.y < -this.length
+        ||  this.pos.x > width + this.length
+        ||  this.pos.y > height + this.length) {
             this.destroy();
         };
     }

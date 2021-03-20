@@ -3,6 +3,7 @@ class Asteroid {
         this.pos = pos;
         this.angle = 0;
         this.angleSpeed = angleSpeed;
+        this.oldAngleSpeed = angleSpeed;
         this.size = size;
         this.maxSize = size + ASTEROID_MAX_HEIGHT;
         this.vel = vel;
@@ -22,10 +23,10 @@ class Asteroid {
     }
     update (dt) {
         this.pos.addMut(this.vel.scale(dt));
-        if (this.pos.x + this.maxSize < 0)      this.pos.x = width + this.maxSize;
-        if (this.pos.y + this.maxSize < 0)      this.pos.y = height + this.maxSize;
-        if (this.pos.x - this.maxSize > width)  this.pos.x = -this.maxSize;
-        if (this.pos.y - this.maxSize > height) this.pos.y = -this.maxSize;
+        if (this.pos.x + this.size * 2 < 0)      this.pos.x = width + this.size * 2;
+        if (this.pos.y + this.size * 2 < 0)      this.pos.y = height + this.size * 2;
+        if (this.pos.x - this.size * 2 > width)  this.pos.x = -this.size * 2;
+        if (this.pos.y - this.size * 2 > height) this.pos.y = -this.size * 2;
         this.angle += this.angleSpeed * dt;
     }
     split (direction) {
@@ -75,7 +76,7 @@ class Asteroid {
             ctx.strokeStyle = "#f88";
             ctx.stroke();
             ctx.beginPath();
-            ctx.arc(0, 0, this.size - ASTEROID_MAX_HEIGHT / 4, Math.min(0, -this.oldAngleSeed * angleSpeedMult), Math.max(-this.oldAngleSeed * angleSpeedMult, 0));
+            ctx.arc(0, 0, this.size - ASTEROID_MAX_HEIGHT / 4, Math.min(0, -this.oldAngleSpeed * angleSpeedMult), Math.max(-this.oldAngleSpeed * angleSpeedMult, 0));
             ctx.strokeStyle = "#ff8";
             ctx.stroke();
         }
