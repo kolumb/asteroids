@@ -80,6 +80,10 @@ function tick(dt) {
                     a1.oldVel = a1.vel.copy();
                     a2.oldVel = a2.vel.copy();
                 }
+                const pool = particles.filter(p => p.lifetime <= 0);
+                const collisionPos = a1.pos.add(dist1to2.normalized().scale(a1.size + ASTEROID_MAX_HEIGHT / 2));
+                const p1 = pool[0] || {};
+                const p2 = pool[1] || {};
                 const a1Speed = dist1to2.dot(a1.vel) / dist;
                 const a2Speed = dist2to1.dot(a2.vel) / dist;
                 if (a1Speed > 0) {
@@ -87,22 +91,28 @@ function tick(dt) {
                     a1.vel.subMut(force1to2.scale(a2Influence * 180 / MAX_ASTEROID_SIZE));
                     a2.vel.addMut(force1to2.scale(a1Influence * 180 / MAX_ASTEROID_SIZE));
                     const perpendicularDir1to2 = dist1to2.y > 0 ? 1 : -1;
-                    const perpendicular1to2Normalized = new Vector(perpendicularDir1to2, -perpendicularDir1to2 * dist1to2.x / dist1to2.y);
-                    a1.perp = perpendicular1to2Normalized;
+                    const perpendicular1to2 = new Vector(perpendicularDir1to2, -perpendicularDir1to2 * dist1to2.x / dist1to2.y);
+                    a1.perp = perpendicular1to2;
+                    p1.lifetime = 50;
+                    p1.pos = collisionPos.copy();
+                    p1.vel = perpendicular1to2.normalized().add(a1.vel);
                     if(debug) a1.oldAngleSeed = a1.angleSpeed;
-                    a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
-                    a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular1to2Normalized.dot(a1.vel) / perpendicular1to2Normalized.length();
+                    a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular1to2.dot(a1.vel) / perpendicular1to2.length();
+                    a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular1to2.dot(a1.vel) / perpendicular1to2.length();
                 }
                 if (a2Speed > 0) {
                     const force2to1 = dist2to1.normalized().scale(a2Speed * ASTEROID_RIGIDITY);
                     a1.vel.addMut(force2to1.scale(a2Influence * 180 / MAX_ASTEROID_SIZE));
                     a2.vel.subMut(force2to1.scale(a1Influence * 180 / MAX_ASTEROID_SIZE));
                     const perpendicularDir2to1 = dist2to1.y > 0 ? 1 : -1;
-                    const perpendicular2to1Normalized = new Vector(perpendicularDir2to1, -perpendicularDir2to1 * dist2to1.x / dist2to1.y);
-                    a2.perp = perpendicular2to1Normalized;
+                    const perpendicular2to1 = new Vector(perpendicularDir2to1, -perpendicularDir2to1 * dist2to1.x / dist2to1.y);
+                    a2.perp = perpendicular2to1;
+                    p2.lifetime = 50;
+                    p2.pos = collisionPos.copy();
+                    p2.vel = perpendicular2to1.normalized().add(a2.vel);
                     if(debug) a2.oldAngleSeed = a2.angleSpeed;
-                    a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
-                    a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular2to1Normalized.dot(a2.vel) / perpendicular2to1Normalized.length();
+                    a1.angleSpeed -= VEL_TO_ROT * a2Influence * perpendicular2to1.dot(a2.vel) / perpendicular2to1.length();
+                    a2.angleSpeed -= VEL_TO_ROT * a1Influence * perpendicular2to1.dot(a2.vel) / perpendicular2to1.length();
                 }
 
                 const deltaAngleSpeed = a1.angleSpeed + a2.angleSpeed;
