@@ -51,6 +51,7 @@ function spawnAsteroid() {
     );
 }
 const gameOverHandler = () => {
+    ufos.forEach(u => u.dangerous = false)
     MenuElem.classList.remove("hidden");
     ScoreElem.textContent = player.score;
 }

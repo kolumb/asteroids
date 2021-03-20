@@ -17,7 +17,14 @@ class UFO {
         const chance = Math.random()
         if (chance < 0.05 * dt) {
             if (chance < 0.01 * dt) {
-                this.target = this.getTarget(player.ship.pos, this.targetRadius);
+                if (player.ship.abductedBy) {
+                    this.target = asteroids[Math.floor(Math.random() * asteroids.length)].pos;
+                    const gun = Vector.fromAngle(player.ship.direction).scale(this.size + 10);
+                    player.ship.shotBullet(dt, player.ship.pos.add(gun));
+                    player.ship.laserSearching = Math.random() < 0.4;
+                } else {
+                    this.target = this.getTarget(player.ship.pos, this.targetRadius);
+                }
             }
             this.nearTarget = this.getTarget(this.target, this.nearRadius);
         }

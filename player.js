@@ -18,9 +18,13 @@ class Player {
                 this.ship.thrust(dt);
             }
         }
+        if (this.ship.abductedBy) {
+            this.ship.size = Math.max(this.ship.size - 0.01, 6);
+            this.ship.pos.addMut(this.ship.abductedBy.pos.add(new Vector(0, this.ship.size * 2)).sub(this.ship.pos).clamp(this.ship.abductedBy.speed * 0.95));
+        }
         this.ship.update(dt);
     }
     draw () {
-        if (!this.ship.abducted) this.ship.draw();
+        this.ship.draw();
     }
 }

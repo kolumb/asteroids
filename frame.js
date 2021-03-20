@@ -23,11 +23,15 @@ function tick(dt) {
             player.ship.pos.addMut(collisionVector.scale(0.05));
             a.split(player.ship.pos.angleTo(a.pos));
             if (!gameOver) {
-                player.ship.shot = false;
+                player.ship.bulletShooting = false;
                 player.ship.laserShooting = false;
                 setTimeout(gameOverHandler, 1000);
                 gameOver = true;
             }
+        }
+        a.dangerous = false;
+        if (player.ship.pos.sub(a.pos).dot(a.vel) > 0 && distPointToLine(player.ship.pos, a.pos, a.pos.add(a.vel)) < a.size * 2) {
+            a.dangerous = true;
         }
     });
     ufos.forEach(u => {
@@ -54,7 +58,7 @@ function tick(dt) {
         });
         if (!gameOver && u.pos.distEuclidean(player.ship.pos) < (u.size + player.ship.size) ** 2) {
             gameOver = true;
-            player.ship.abducted = true;
+            player.ship.abductedBy = u;
             setTimeout(gameOverHandler, 1000);
         }
     });
@@ -125,8 +129,8 @@ function tick(dt) {
     }
     if (frameCount > nextAsteroidSpawn) {
         if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
-        nextAsteroidSpawn = frameCount + asteroids.length * 6;
-        if (ufos.length < player.score / 100 && Math.random() < 0.4 * dt) {
+        nextAsteroidSpawn = frameCount + asteroids.length * 7;
+        if (ufos.length < player.score / 120 && Math.random() < 0.4 * dt) {
             if (Math.random() < 0.5) {
                 var x = Math.random() * width;
                 var y = Math.random() < 0.5 ? -100 : height + 100;

@@ -6,6 +6,7 @@ class Asteroid {
         this.size = size;
         this.maxSize = size + ASTEROID_MAX_HEIGHT;
         this.vel = vel;
+        this.dangerous = false;
         this.points = [];
         const numberOfPoints = size * 0.75;
         let lastAngle = 0;
@@ -60,14 +61,14 @@ class Asteroid {
             this.points.forEach(p => ctx.lineTo(p.x, p.y));
             ctx.closePath();
         }
-        if (debug) {
+        if (debug || this.dangerous) {
             ctx.moveTo(this.size + ASTEROID_MAX_HEIGHT / 2, 0);
             ctx.arc(0, 0, this.size + ASTEROID_MAX_HEIGHT / 2, 0, Math.PI * 2);
             ctx.lineTo(this.size, 0);
         }
         ctx.strokeStyle = "white";
         ctx.stroke();
-        if (debug) {
+        if (debug || this.dangerous) {
             const angleSpeedMult = 100
             ctx.beginPath();
             ctx.arc(0, 0, this.size, Math.min(0, -this.angleSpeed * angleSpeedMult), Math.max(-this.angleSpeed * angleSpeedMult, 0));

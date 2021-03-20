@@ -13,7 +13,7 @@ class Ship {
         this.laserShooting = false;
         this.laserTarget = null;
         this.lastShotFrame = 0;
-        this.abducted = false;
+        this.abductedBy = null;
     }
     turnLeft (dt) {
         this.direction += this.rotationSpeed * dt;
@@ -25,6 +25,26 @@ class Ship {
         this.vel.addMut(Vector.fromAngle(this.direction)
             .scale(this.thrustPower * dt));
     }
+    shotBullet (dt, gun) {
+        if (frameCount - this.lastShotFrame > SHOOT_COOLDOWN / dt) {
+            this.vel.addMut(Vector.fromAngle(this.direction).scale(-this.knockback * dt))
+            bullets.push(new Bullet(gun, this.direction));
+            this.lastShotFrame = frameCount;
+        }
+    }
+    shotLaser (dt) {
+        this.laserEnergy -= dt / (this.laserTarget.size * 2);
+        if (frameCount - this.miningStart > this.laserTarget.size * 2 / dt) {
+            this.laserShooting = false;
+            if (this.laserTarget.target) {
+                player.score += this.laserTarget.size;
+                ufos.splice(ufos.indexOf(this.laserTarget), 1);
+            } else {
+                player.score += 2 ** Math.floor(this.laserTarget.size / MIN_ASTEROID_SIZE) / 2;
+                asteroids.splice(asteroids.indexOf(this.laserTarget), 1);
+            }
+        }
+    }
     update (dt) {
         this.laserEnergy = Math.min(this.laserEnergy + this.laserEnergyRestorationSpeed * dt, 10);
         const probePos = this.pos.add(this.vel.scale(dt));
@@ -34,8 +54,6 @@ class Ship {
         if (probePos.y < 0 || probePos.y > height) {
             this.vel.y *= -EDGE_BOUNCINESS;
         }
-        this.pos.addMut(this.vel.scale(dt));
-        if (gameOver) return;
         const direction = Vector.fromAngle(this.direction);
         const gun = this.pos.add(direction.scale(this.size));
         if (this.laserSearching && !this.laserShooting && this.laserEnergy > 1) {
@@ -49,14 +67,16 @@ class Ship {
                     }
                 }
             })
-            ufos.forEach(u => {
-                const distToLazer = distPointToLine(u.pos, gun, laserCap);
-                if (distToLazer < u.size) {
-                    if (direction.dot(this.pos.sub(u.pos)) < 0) {
-                        candidates.push(u);
+            if (!this.abductedBy) {
+                ufos.forEach(u => {
+                    const distToLazer = distPointToLine(u.pos, gun, laserCap);
+                    if (distToLazer < u.size) {
+                        if (direction.dot(this.pos.sub(u.pos)) < 0) {
+                            candidates.push(u);
+                        }
                     }
-                }
-            })
+                })
+            }
             let closestOne;
             let minDist = Infinity;
             candidates.forEach(a => {
@@ -73,24 +93,12 @@ class Ship {
             }
         }
         if (this.laserShooting) {
-            this.laserEnergy -= dt / (this.laserTarget.size * 2);
-            if (frameCount - this.miningStart > this.laserTarget.size * 2 / dt) {
-                this.laserShooting = false;
-                if (this.laserTarget.target) {
-                    player.score += this.laserTarget.size;
-                    ufos.splice(ufos.indexOf(this.laserTarget), 1);
-                } else {
-                    player.score += 2 ** Math.floor(this.laserTarget.size / MIN_ASTEROID_SIZE) / 2;
-                    asteroids.splice(asteroids.indexOf(this.laserTarget), 1);
-                }
-            }
+            this.shotLaser(dt);
         }
-        if (this.shot) {
-            if (frameCount - this.lastShotFrame > SHOOT_COOLDOWN / dt) {
-                this.vel.addMut(Vector.fromAngle(this.direction).scale(-this.knockback * dt))
-                bullets.push(new Bullet(gun, this.direction));
-                this.lastShotFrame = frameCount;
-            }
+        if (!this.abductedBy) this.pos.addMut(this.vel.scale(dt));
+        if (gameOver) return;
+        if (this.bulletShooting) {
+            this.shotBullet(dt, gun);
         }
         ufos.forEach(u => {
             u.dangerous = false;
@@ -98,7 +106,7 @@ class Ship {
             if (distToUFOPath < u.targetRadius / 2) {
                 const distToUFO = u.pos.dist(this.pos);
                 const distUFOToTarget = u.pos.dist(u.target);
-                if (distToUFO < u.targetRadius || distToUFO < distUFOToTarget) {
+                if ((distToUFO < u.targetRadius || distToUFO < distUFOToTarget) && u.pos.sub(this.pos).dot(u.pos.sub(u.target)) > 0) {
                     u.dangerous = true;
                 }
             }
