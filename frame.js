@@ -12,6 +12,9 @@ function tick(dt) {
                 a.split(angle);
                 b.destroy();
                 player.score += Math.floor(a.size / MIN_ASTEROID_SIZE);
+                if (player.ship.laserTarget === a && !player.ship.laserTarget.target) {
+                    player.ship.laserShooting = false;
+                }
             }
         })
         if (player.ship.pos.distEuclidean(a.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2 + player.ship.size / 2) ** 2) {
@@ -21,6 +24,7 @@ function tick(dt) {
             a.split(player.ship.pos.angleTo(a.pos));
             if (!gameOver) {
                 player.ship.shot = false;
+                player.ship.laserShooting = false;
                 setTimeout(gameOverHandler, 1000);
                 gameOver = true;
             }
