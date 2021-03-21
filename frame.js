@@ -35,6 +35,12 @@ function tick(dt) {
         }
     });
     ufos.forEach(u => {
+        if (!gameOver && u.pos.distEuclidean(player.ship.pos) < (u.size + player.ship.size) ** 2) {
+            gameOver = true;
+            u.health = Infinity;
+            player.ship.abductedBy = u;
+            setTimeout(gameOverHandler, 1000);
+        }
         bullets.forEach(b => {
             if (u.pos.distEuclidean(b.pos) < u.size ** 2) {
                 b.destroy();
@@ -56,11 +62,6 @@ function tick(dt) {
                 }
             }
         });
-        if (!gameOver && u.pos.distEuclidean(player.ship.pos) < (u.size + player.ship.size) ** 2) {
-            gameOver = true;
-            player.ship.abductedBy = u;
-            setTimeout(gameOverHandler, 1000);
-        }
     });
     for (let i = 0; i < asteroids.length - 1; i++) {
         for (let j = i + 1; j < asteroids.length; j++) {
