@@ -69,9 +69,8 @@ class Asteroid {
         ctx.rotate(-this.angle);
         ctx.beginPath();
         if (!debug || !debugCollisions) {
-            ctx.moveTo(this.points[0].x, this.points[0].y);
+            ctx.moveTo(this.points[this.points.length - 1].x, this.points[this.points.length - 1].y);
             this.points.forEach(p => ctx.lineTo(p.x, p.y));
-            ctx.closePath();
         }
         if (debug || this.dangerous) {
             ctx.moveTo(this.size + ASTEROID_MAX_HEIGHT / 2, 0);
