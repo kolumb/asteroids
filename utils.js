@@ -1,4 +1,6 @@
 "use strict";
+function mod(n, limit) { return (n % limit + limit) % limit }
+
 function randomColor() {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);
@@ -23,6 +25,8 @@ function clamp(n, limit) {
 const distPointToLine = (p, l1, l2) =>
     Math.abs((l2.x - l1.x) * (l1.y - p.y) - (l1.x - p.x) * (l2.y - l1.y))
     / Math.sqrt((l2.x - l1.x)**2 + (l2.y - l1.y)**2);
+
+const determinant = (p, l1, l2) => (l2.x - l1.x) * (p.y - l1.y) - (l2.y - l1.y) * (p.x - l1.x)
 
 function toggleFullScreen() {
     if (!document.fullscreenElement) {

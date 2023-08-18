@@ -23,7 +23,7 @@ var lastFrameTime = 0;
 updateSize();
 
 const bullets = [];
-const player = new Player(new Ship(new Vector(width / 2, height / 2), 13));
+const player = new Player(new Ship(new Vector(width / 2, 3*height / 4), 13));
 const asteroids = [];
 const ufos = [];
 const particles = [];
@@ -43,8 +43,8 @@ function spawnAsteroid() {
     const angleSpeed = 0.0;
     asteroids.push(
         new Asteroid(
-            new Vector(x, y),
-            MIN_ASTEROID_SIZE + (Math.random() ** 3) * MAX_ASTEROID_SIZE,
+            new Vector(width/2, height/3),//x, y),
+            50,//MIN_ASTEROID_SIZE + (Math.random() ** 3) * MAX_ASTEROID_SIZE,
             new Vector(Math.random() * vel * 2 - vel, Math.random() * vel * 2 - vel),
             Math.random() * 2 * angleSpeed - angleSpeed
         )

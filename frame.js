@@ -9,7 +9,7 @@ function tick(dt) {
         bullets.forEach(b => {
             if (a.pos.distEuclidean(b.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2) ** 2) {
                 const angle = b.pos.angleTo(a.pos);
-                a.split(angle);
+                a.split(b.direction, b.pos);
                 b.destroy();
                 player.score += Math.floor(a.size / MIN_ASTEROID_SIZE);
                 if (player.ship.laserTarget === a && !player.ship.laserTarget.target) {
@@ -19,9 +19,11 @@ function tick(dt) {
         })
         if (player.ship.pos.distEuclidean(a.pos) < (a.size + ASTEROID_MAX_HEIGHT / 2 + player.ship.size / 2) ** 2) {
             const collisionVector = player.ship.pos.sub(a.pos);
+            console.log(player.ship.pos.distEuclidean(a.pos))
+            console.log(a.size, ASTEROID_MAX_HEIGHT / 2, player.ship.size / 2)
             player.ship.vel.addMut(collisionVector.scale(0.05));
             player.ship.pos.addMut(collisionVector.scale(0.05));
-            a.split(player.ship.pos.angleTo(a.pos));
+            a.split(player.ship.pos.angleTo(a.pos), player.ship.pos);
             if (!gameOver) {
                 player.ship.bulletShooting = false;
                 player.ship.laserShooting = false;
@@ -129,7 +131,7 @@ function tick(dt) {
         }
     }
     if (frameCount > nextAsteroidSpawn) {
-        if (asteroids.length < MAX_ASTEROID_SIZE) spawnAsteroid();
+        if (asteroids.length < 1)/*MAX_ASTEROID_SIZE)*/ spawnAsteroid();
         nextAsteroidSpawn = frameCount + asteroids.length * 7;
         if (ufos.length < Math.log2(player.score / 100) + 1 && Math.random() < 0.4 * dt) {
             if (Math.random() < 0.5) {
@@ -167,12 +169,15 @@ function render() {
     ctx.font = "20px sans-serif";
     ctx.fillText(player.score, width - 10, 25);
 }
+let slowdown = 10;
 function frame(time) {
     const dt = time - lastFrameTime;
     lastFrameTime = time;
     frameCount++;
-    if (dt < 1000) tick(dt * 0.06);
-    render();
+    if (frameCount % slowdown ===0) {
+        if (dt < 1000) tick(dt * 0.06);
+        render();
+    }
     if (pause === false) {
         requestAnimationFrame(frame);
     }
