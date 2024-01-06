@@ -141,7 +141,7 @@ function tick(dt) {
                 var x = Math.random() < 0.5 ? -100 : width + 100;
                 var y = Math.random() * height;
             }
-            ufos.push(new UFO(new Vector(x, y)))
+            // ufos.push(new UFO(new Vector(x, y)))
         }
     }
 }
