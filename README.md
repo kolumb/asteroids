@@ -1,4 +1,4 @@
-## Live demo: [kolumb.tk/asteroids](https://kolumb.tk/asteroids/)
+## Live demo: [kolumb.github.io/asteroids](https://kolumb.github.io/asteroids/)
 
 ### Controls:
 | Key | Action |
